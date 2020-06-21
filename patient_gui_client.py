@@ -3,6 +3,9 @@ from tkinter import ttk
 import base64
 from tkinter import filedialog
 from PIL import Image, ImageTk
+from ECG_analyis import mean_bpm
+from ECG_analyis import normalize_data
+
 
 
 def load_image_for_display(file_name):
@@ -54,9 +57,9 @@ def design_window():
     mrn_entry_box = ttk.Entry(root, width=30, textvariable=mrn_entry)
     mrn_entry_box.grid(column=1, row=2)
 
-    file_name = tk.StringVar()
-    file_name_box = ttk.Entry(root, width=50, textvariable=file_name)
-    file_name_box.grid(column=0, row=3)
+    image_name = tk.StringVar()
+    image_name_box = ttk.Entry(root, width=50, textvariable=image_name)
+    image_name_box.grid(column=0, row=3)
 
     ok_button = ttk.Button(root, text="ok", comman=load_image)
     ok_button.grid(column=1, row=3)
@@ -66,6 +69,10 @@ def design_window():
 
     result_label = ttk.Label(root)
     result_label.grid(column=4, row=1)
+
+    file_name = tk.StringVar()
+    file_name_box = ttk.Entry(root, width=50, textvariable=image_name)
+    file_name_box.grid(column=0, row=3)
 
 
 
