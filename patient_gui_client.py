@@ -6,9 +6,10 @@ from PIL import Image, ImageTk
 from ECG_analyis import mean_bpm
 from ECG_analyis import normalize_data
 import matplotlib.pyplot as plt
+import requests
 
 
-
+server_name = ""
 
 def load_image_for_display(file_name):
     image_object = Image.open(file_name)
@@ -22,7 +23,7 @@ def convert_file_to_b64str(fn):
     return b64_string
 
 def send_b64img_to_server(b64_str):
-    #r = requests.post(server_name+"/post_image", json=b64_str)
+    r = requests.post(server_name+"/post_image", json=b64_str)
     r = 200
     if r == 200:
         return "Good Post"
@@ -58,8 +59,8 @@ def design_window():
         # result = mean_bpm(fn)
 
     def upload_img():
-        fn = file_name.get()
-        b64 = convert_file_to_b64str(fn)
+        im = image_name.get()
+        b64 = convert_file_to_b64str(im)
         return_msg = send_b64img_to_server(b64)
         ttk.Label(root, text=return_msg).grid(column=4, row=0)
         result_label.configure(text=return_msg)
