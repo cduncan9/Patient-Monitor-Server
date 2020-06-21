@@ -5,6 +5,8 @@ from tkinter import filedialog
 from PIL import Image, ImageTk
 from ECG_analyis import mean_bpm
 from ECG_analyis import normalize_data
+import matplotlib.pyplot as plt
+
 
 
 
@@ -20,6 +22,7 @@ def convert_file_to_b64str(fn):
     return b64_string
 
 
+
 def design_window():
 
     def get_file():
@@ -27,11 +30,21 @@ def design_window():
         file_name.set(fn)
 
     def load_image():
-        fn = file_name.get()
+        fn = image_name.get()
         tk_image = load_image_for_display(fn)
         image_label.configure(image=tk_image)
         image_label.image = tk.image
         result_label.grid_remove()
+
+    def load_ECG_trace():
+        fn = file_name.get()
+        hr_data = normalize_data(fn)
+        plt.plot(hr_data[:, 0], hr_data[:, 1])
+        plt.xlabel("Time (s)")
+        plt.ylabel("Voltage (mV)")
+        plt.title("ECG Trace")
+        plt.show()
+        # result = mean_bpm(fn)
 
 
 
@@ -61,8 +74,9 @@ def design_window():
     image_name_box = ttk.Entry(root, width=50, textvariable=image_name)
     image_name_box.grid(column=0, row=3)
 
-    ok_button = ttk.Button(root, text="ok", comman=load_image)
-    ok_button.grid(column=1, row=3)
+    image_ok_button = ttk.Button(root, text="ok", command=load_image)
+    image_ok_button.grid(column=1, row=3)
+
 
     image_label = ttk.Label(root)
     image_label.grid(column=0, row=0)
@@ -71,9 +85,11 @@ def design_window():
     result_label.grid(column=4, row=1)
 
     file_name = tk.StringVar()
-    file_name_box = ttk.Entry(root, width=50, textvariable=image_name)
-    file_name_box.grid(column=0, row=3)
+    file_name_box = ttk.Entry(root, width=50, textvariable=file_name)
+    file_name_box.grid(column=0, row=4)
 
+    file_ok_button = ttk.Button(root, text="ok", command=load_ECG_trace)
+    file_ok_button.grid(column=1, row=4)
 
 
     root.mainloop()
