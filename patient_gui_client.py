@@ -19,6 +19,19 @@ def convert_file_to_b64str(fn):
 
 def design_window():
 
+    def get_file():
+        fn = filedialog.askopenfilename()
+        file_name.set(fn)
+
+    def load_image():
+        fn = file_name.get()
+        tk_image = load_image_for_display(fn)
+        image_label.configure(image=tk_image)
+        image_label.image = tk.image
+        result_label.grid_remove()
+
+
+
     def cancel():
         root.destroy()
 
@@ -40,6 +53,19 @@ def design_window():
     mrn_entry.set("Enter Your MRN")
     mrn_entry_box = ttk.Entry(root, width=30, textvariable=mrn_entry)
     mrn_entry_box.grid(column=1, row=2)
+
+    file_name = tk.StringVar()
+    file_name_box = ttk.Entry(root, width=50, textvariable=file_name)
+    file_name_box.grid(column=0, row=3)
+
+    ok_button = ttk.Button(root, text="ok", comman=load_image)
+    ok_button.grid(column=1, row=3)
+
+    image_label = ttk.Label(root)
+    image_label.grid(column=0, row=0)
+
+    result_label = ttk.Label(root)
+    result_label.grid(column=4, row=1)
 
 
 
