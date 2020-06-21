@@ -4,3 +4,4 @@ pytest-pep8
 flask
 requests
 matplotlib
+scipy

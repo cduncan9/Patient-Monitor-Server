@@ -29,6 +29,10 @@ def design_window():
         fn = filedialog.askopenfilename()
         file_name.set(fn)
 
+    def get_image():
+        im = filedialog.askopenfilename()
+        image_name.set(im)
+
     def load_image():
         fn = image_name.get()
         tk_image = load_image_for_display(fn)
@@ -74,6 +78,9 @@ def design_window():
     image_name_box = ttk.Entry(root, width=50, textvariable=image_name)
     image_name_box.grid(column=0, row=3)
 
+    image_button = ttk.Button(root, text="get image name", command=get_image())
+    image_button.grid(column=0, row=3)
+
     image_ok_button = ttk.Button(root, text="ok", command=load_image)
     image_ok_button.grid(column=1, row=3)
 
@@ -87,6 +94,9 @@ def design_window():
     file_name = tk.StringVar()
     file_name_box = ttk.Entry(root, width=50, textvariable=file_name)
     file_name_box.grid(column=0, row=4)
+
+    file_button = ttk.Button(root, text="get filename", command=get_file())
+    file_button.grid(column=0, row=4)
 
     file_ok_button = ttk.Button(root, text="ok", command=load_ECG_trace)
     file_ok_button.grid(column=1, row=4)
