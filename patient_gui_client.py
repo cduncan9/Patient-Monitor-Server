@@ -11,16 +11,19 @@ import requests
 
 server_name = ""
 
+
 def load_image_for_display(file_name):
     image_object = Image.open(file_name)
     tk_image = ImageTk.PhotoImage(image_object)
     return tk_image
+
 
 def convert_file_to_b64str(fn):
     with open(fn, "rb") as image_file:
         b64_bytes = base64.b64encode(image_file.read())
     b64_string = str(b64_bytes, encoding='utf-8')
     return b64_string
+
 
 def send_b64img_to_server(b64_str):
     r = requests.post(server_name+"/post_image", json=b64_str)
@@ -65,14 +68,12 @@ def design_window():
         ttk.Label(root, text=return_msg).grid(column=4, row=0)
         result_label.configure(text=return_msg)
 
-
     def upload_ECG():
         fn = file_name.get()
         b64 = convert_file_to_b64str(fn)
         return_msg = send_b64img_to_server(b64)
         ttk.Label(root, text=return_msg).grid(column=4, row=0)
         result_label.configure(text=return_msg)
-
 
     def cancel():
         root.destroy()
@@ -106,7 +107,6 @@ def design_window():
     image_ok_button = ttk.Button(root, text="ok", command=load_image)
     image_ok_button.grid(column=1, row=3)
 
-
     image_label = ttk.Label(root)
     image_label.grid(column=0, row=0)
 
@@ -122,7 +122,6 @@ def design_window():
 
     file_ok_button = ttk.Button(root, text="ok", command=load_ECG_trace)
     file_ok_button.grid(column=1, row=4)
-
 
     root.mainloop()
     print("finished")
