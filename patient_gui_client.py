@@ -21,6 +21,13 @@ def convert_file_to_b64str(fn):
     b64_string = str(b64_bytes, encoding='utf-8')
     return b64_string
 
+def send_b64img_to_server(b64_str):
+    #r = requests.post(server_name+"/post_image", json=b64_str)
+    r = 200
+    if r == 200:
+        return "Good Post"
+    else:
+        return "Bad Post"
 
 
 def design_window():
@@ -50,6 +57,20 @@ def design_window():
         plt.show()
         # result = mean_bpm(fn)
 
+    def upload_img():
+        fn = file_name.get()
+        b64 = convert_file_to_b64str(fn)
+        return_msg = send_b64img_to_server(b64)
+        ttk.Label(root, text=return_msg).grid(column=4, row=0)
+        result_label.configure(text=return_msg)
+
+
+    def upload_ECG():
+        fn = file_name.get()
+        b64 = convert_file_to_b64str(fn)
+        return_msg = send_b64img_to_server(b64)
+        ttk.Label(root, text=return_msg).grid(column=4, row=0)
+        result_label.configure(text=return_msg)
 
 
     def cancel():
