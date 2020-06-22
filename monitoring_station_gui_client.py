@@ -99,7 +99,8 @@ def design_window():
     display_ecg_text = ttk.Label(root, text="Most Recent ECG:")
     display_ecg_text.grid(column=0, row=5, sticky="E")
 
-    display_timestamp_text = ttk.Label(root, text="Time of Most Recent Reading:")
+    display_timestamp_text = ttk.Label(root,
+                                       text="Time of Most Recent Reading:")
     display_timestamp_text.grid(column=0, row=6)
 
     past_ecg_text = ttk.Label(root, text="Load Past ECG")
