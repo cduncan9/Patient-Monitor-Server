@@ -1,6 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
+from matplotlib import pyplot as plt
+import base64
+import io
+import matplotlib.image as mpimg
 
 
 server_name = ""
@@ -13,35 +17,44 @@ def load_image_for_display(file_name):
 
 
 def get_available_patient_ids():
-    # This should make a request to the server and return
-    # available patient_ids
-    return "001"  # This is just a place holder
+    # This will make a request
+    return
 
 
 def load_patient_data():
-    # I think that I will store everything in a dictionary
-    test_dict = {"Name": "Canyon", "Patient ID": "1",
-                 "Heart Rate": "60", "timestamp": "3:00"}
-    return test_dict
+    # This will make a request
+    return
 
 
 def get_past_ecg_files():
+    # This will make a request
     return
 
 
 def load_ecg_image(timestamp):
+    # This will make a request
     return
 
 
 def get_image_file():
+    # this will make a request
     return
 
 
 def load_medical_image(timestamp):
+    # this will make a request
     return
 
 
 def design_window():
+
+    def display_image(base64_string):
+        image_bytes = base64.b64decode(base64_string)
+        image_buf = io.BytesIO(image_bytes)
+        i = mpimg.imread(image_buf, format='JPG')
+        plt.imshow(i, interpolation='nearest')
+        plt.show()
+        return
 
     def display_patient_data():
         patient_dict = load_patient_data()
@@ -49,7 +62,6 @@ def design_window():
         pat_name = patient_dict["Name"]
         pat_hr = patient_dict["Heart Rate"]
         pat_time = patient_dict["timestamp"]
-        ecg_file = load_ecg_image(pat_time)
 
         display_patient_id_value.configure(text=pat_id)
         display_patient_name_value.configure(text=pat_name)
