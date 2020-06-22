@@ -10,12 +10,6 @@ import matplotlib.image as mpimg
 server_name = ""
 
 
-def load_image_for_display(file_name):
-    image_object = Image.open(file_name)
-    tk_image = ImageTk.PhotoImage(image_object)
-    return tk_image
-
-
 def get_available_patient_ids():
     # This will make a request
     return
