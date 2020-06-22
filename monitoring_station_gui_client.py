@@ -40,6 +40,10 @@ def load_medical_image():
 
 
 def design_window():
+
+    def cancel():
+        root.destroy()
+
     root = tk.Tk()
     root.title("Monitoring Station User Interface")
 
@@ -96,6 +100,10 @@ def design_window():
     load_image_button = ttk.Button(root, text="Load Image",
                                    command=load_medical_image)
     load_image_button.grid(column=2, row=8)
+
+    exit_button = ttk.Button(root, text="Exit",
+                             command=cancel)
+    exit_button.grid(column=2, row=9)
 
     root.mainloop()
 
