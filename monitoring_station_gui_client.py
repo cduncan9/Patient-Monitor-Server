@@ -6,10 +6,10 @@ from PIL import Image, ImageTk
 server_name = ""
 
 
-# def load_image_for_display(file_name):
-#     image_object = Image.open(file_name)
-#     tk_image = ImageTk.PhotoImage(image_object)
-#     return tk_image
+def load_image_for_display(file_name):
+    image_object = Image.open(file_name)
+    tk_image = ImageTk.PhotoImage(image_object)
+    return tk_image
 
 
 def get_available_patient_ids():
@@ -42,27 +42,27 @@ def load_medical_image(timestamp):
 def design_window():
 
     def display_patient_data():
-        # patient_dict = load_patient_data()
-        # pat_id = patient_dict["Patient ID"]
-        # pat_name = patient_dict["Name"]
-        # pat_hr = patient_dict["Heart Rate"]
-        # pat_time = patient_dict["timestamp"]
-        # ecg_file = load_ecg_image(pat_time)
-        #
-        # display_patient_id_value = ttk.Label(root, text=pat_id)
-        # display_patient_id_value.grid(column=1, row=2, sticky="E")
-        #
-        # display_patient_name_value = ttk.Label(root, text=pat_name)
-        # display_patient_name_value.grid(column=1, row=3, sticky="E")
-        #
-        # display_patient_hr_value = ttk.Label(root, text=pat_hr)
-        # display_patient_hr_value.grid(column=1, row=4, sticky="E")
-        #
-        # display_ecg_value = ttk.Label(root)
-        # display_ecg_value.grid(column=1, row=5, sticky="E")
-        #
-        # display_timestamp_value = ttk.Label(root, text=pat_time)
-        # display_timestamp_value.grid(column=1, row=6, sticky="E")
+        patient_dict = load_patient_data()
+        pat_id = patient_dict["Patient ID"]
+        pat_name = patient_dict["Name"]
+        pat_hr = patient_dict["Heart Rate"]
+        pat_time = patient_dict["timestamp"]
+        ecg_file = load_ecg_image(pat_time)
+
+        display_patient_id_value = ttk.Label(root, text=pat_id)
+        display_patient_id_value.grid(column=1, row=2, sticky="E")
+
+        display_patient_name_value = ttk.Label(root, text=pat_name)
+        display_patient_name_value.grid(column=1, row=3, sticky="E")
+
+        display_patient_hr_value = ttk.Label(root, text=pat_hr)
+        display_patient_hr_value.grid(column=1, row=4, sticky="E")
+
+        display_ecg_value = ttk.Label(root)
+        display_ecg_value.grid(column=1, row=5, sticky="E")
+
+        display_timestamp_value = ttk.Label(root, text=pat_time)
+        display_timestamp_value.grid(column=1, row=6, sticky="E")
         return
 
     def cancel():
