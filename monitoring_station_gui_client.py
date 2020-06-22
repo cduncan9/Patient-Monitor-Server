@@ -16,6 +16,10 @@ def get_past_ecg_files():
     return
 
 
+def load_past_ecg_image():
+    return
+
+
 def design_window():
     root = tk.Tk()
     root.title("Monitoring Station User Interface")
@@ -48,7 +52,7 @@ def design_window():
     display_timestamp_text = ttk.Label(root, text="Date and Time of Most Recent Heart Rate Reading:")
     display_timestamp_text.grid(column=0, row=6, columnspan=2)
 
-    past_ecg_text = ttk.Label(root, text="Load Past ECG Image:")
+    past_ecg_text = ttk.Label(root, text="Load Past ECG Image")
     past_ecg_text.grid(column=3, row=0)
 
     past_ecg_file = tk.StringVar()
@@ -56,6 +60,10 @@ def design_window():
     past_ecg_box['values'] = get_past_ecg_files()
     past_ecg_box.state(['readonly'])
     past_ecg_box.grid(column=4, row=0)
+
+    past_ecg_button = ttk.Button(root, text="Load Image",
+                                 command=load_past_ecg_image)
+    past_ecg_button.grid(column=5, row=0)
 
     root.mainloop()
 
