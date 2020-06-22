@@ -69,7 +69,16 @@ def design_window():
         root.destroy()
 
     def reset():
-        return
+        nonlocal display_patient_id_value
+        nonlocal display_patient_name_value
+        nonlocal display_patient_hr_value
+        nonlocal display_timestamp_value
+        nonlocal display_ecg_value
+        display_patient_id_value.destroy()
+        display_patient_name_value.destroy()
+        display_patient_hr_value.destroy()
+        display_timestamp_value.destroy()
+        display_ecg_value.destroy()
 
     root = tk.Tk()
     root.title("Monitoring Station User Interface")
