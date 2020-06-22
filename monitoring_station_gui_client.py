@@ -57,24 +57,24 @@ def design_window():
     display_patient_hr_text = ttk.Label(root, text="Most Recent Heart Rate:")
     display_patient_hr_text.grid(column=0, row=4, sticky="E")
 
-    display_ecg_text = ttk.Label(root, text="Most Recent ECG Image:")
-    display_ecg_text.grid(column=0, row=5)
+    display_ecg_text = ttk.Label(root, text="Most Recent ECG:")
+    display_ecg_text.grid(column=0, row=5, sticky="E")
 
-    display_timestamp_text = ttk.Label(root, text="Date and Time of Most Recent Heart Rate Reading:")
-    display_timestamp_text.grid(column=0, row=6, columnspan=2)
+    display_timestamp_text = ttk.Label(root, text="Time of Most Recent Reading:")
+    display_timestamp_text.grid(column=0, row=6)
 
-    past_ecg_text = ttk.Label(root, text="Load Past ECG Image")
-    past_ecg_text.grid(column=3, row=0)
+    past_ecg_text = ttk.Label(root, text="Load Past ECG")
+    past_ecg_text.grid(column=0, row=7)
 
     past_ecg_file = tk.StringVar()
     past_ecg_box = ttk.Combobox(root, textvariable=past_ecg_file)
     past_ecg_box['values'] = get_past_ecg_files()
     past_ecg_box.state(['readonly'])
-    past_ecg_box.grid(column=4, row=0)
+    past_ecg_box.grid(column=1, row=7)
 
-    past_ecg_button = ttk.Button(root, text="Load Image",
+    past_ecg_button = ttk.Button(root, text="Load Data",
                                  command=load_past_ecg_image)
-    past_ecg_button.grid(column=5, row=0)
+    past_ecg_button.grid(column=2, row=7)
 
     root.mainloop()
 
