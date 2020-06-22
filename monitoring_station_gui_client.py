@@ -20,6 +20,7 @@ def get_available_patient_ids():
 
 
 def load_patient_data():
+    # I think that I will store everything in a dictionary
     return
 
 
@@ -41,6 +42,29 @@ def load_medical_image():
 
 def design_window():
 
+    def display_patient_data():
+        patient_dict = load_patient_data()
+        pat_id = patient_dict["Patient ID"]
+        pat_name = patient_dict["Name"]
+        pat_hr = patient_dict["Heart Rate"]
+        pat_time = patient_dict["timestamp"]
+        ecg_file = patient_dict["ECG"]
+
+        display_patient_id_value = ttk.Label(root, text=pat_id)
+        display_patient_id_value.grid(column=1, row=2, sticky="E")
+
+        display_patient_name_value = ttk.Label(root, text=pat_name)
+        display_patient_name_value.grid(column=1, row=3, sticky="E")
+
+        display_patient_hr_value = ttk.Label(root, text=pat_hr)
+        display_patient_hr_value.grid(column=1, row=4, sticky="E")
+
+        display_ecg_value = ttk.Label(root)
+        display_ecg_value.grid(column=1, row=5, sticky="E")
+
+        display_timestamp_value = ttk.Label(root, text=pat_time)
+        display_timestamp_value.grid(column=1, row=6)
+
     def cancel():
         root.destroy()
 
@@ -57,7 +81,7 @@ def design_window():
     patient_id_box.grid(column=1, row=0)
 
     load_patient_button = ttk.Button(root, text="Load Patient Data",
-                                     command=load_patient_data)
+                                     command=display_patient_data)
     load_patient_button.grid(column=2, row=0)
 
     display_patient_id_text = ttk.Label(root, text="Patient ID:")
@@ -104,6 +128,10 @@ def design_window():
     exit_button = ttk.Button(root, text="Exit",
                              command=cancel)
     exit_button.grid(column=2, row=9)
+
+    # reset_button = ttk.Button(root, text="Reset Data",
+    #                           command=reset)
+    # reset_button.grid(column=1, row=9)
 
     root.mainloop()
 
