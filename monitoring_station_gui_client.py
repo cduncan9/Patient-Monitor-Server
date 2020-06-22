@@ -1,5 +1,16 @@
 import tkinter as tk
 from tkinter import ttk
+from PIL import Image, ImageTk
+import matplotlib.pyplot as plt
+
+
+server_name = ""
+
+
+def load_image_for_display(file_name):
+    image_object = Image.open(file_name)
+    tk_image = ImageTk.PhotoImage(image_object)
+    return tk_image
 
 
 def get_available_patient_ids():
