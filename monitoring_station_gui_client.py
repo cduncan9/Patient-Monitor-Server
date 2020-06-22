@@ -1,16 +1,15 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
-import matplotlib.pyplot as plt
 
 
 server_name = ""
 
 
-def load_image_for_display(file_name):
-    image_object = Image.open(file_name)
-    tk_image = ImageTk.PhotoImage(image_object)
-    return tk_image
+# def load_image_for_display(file_name):
+#     image_object = Image.open(file_name)
+#     tk_image = ImageTk.PhotoImage(image_object)
+#     return tk_image
 
 
 def get_available_patient_ids():
@@ -28,7 +27,7 @@ def get_past_ecg_files():
     return
 
 
-def load_past_ecg_image():
+def load_ecg_image(timestamp):
     return
 
 
@@ -36,37 +35,41 @@ def get_image_file():
     return
 
 
-def load_medical_image():
+def load_medical_image(timestamp):
     return
 
 
 def design_window():
 
     def display_patient_data():
-        patient_dict = load_patient_data()
-        pat_id = patient_dict["Patient ID"]
-        pat_name = patient_dict["Name"]
-        pat_hr = patient_dict["Heart Rate"]
-        pat_time = patient_dict["timestamp"]
-        ecg_file = patient_dict["ECG"]
-
-        display_patient_id_value = ttk.Label(root, text=pat_id)
-        display_patient_id_value.grid(column=1, row=2, sticky="E")
-
-        display_patient_name_value = ttk.Label(root, text=pat_name)
-        display_patient_name_value.grid(column=1, row=3, sticky="E")
-
-        display_patient_hr_value = ttk.Label(root, text=pat_hr)
-        display_patient_hr_value.grid(column=1, row=4, sticky="E")
-
-        display_ecg_value = ttk.Label(root)
-        display_ecg_value.grid(column=1, row=5, sticky="E")
-
-        display_timestamp_value = ttk.Label(root, text=pat_time)
-        display_timestamp_value.grid(column=1, row=6)
+        # patient_dict = load_patient_data()
+        # pat_id = patient_dict["Patient ID"]
+        # pat_name = patient_dict["Name"]
+        # pat_hr = patient_dict["Heart Rate"]
+        # pat_time = patient_dict["timestamp"]
+        # ecg_file = load_ecg_image(pat_time)
+        #
+        # display_patient_id_value = ttk.Label(root, text=pat_id)
+        # display_patient_id_value.grid(column=1, row=2, sticky="E")
+        #
+        # display_patient_name_value = ttk.Label(root, text=pat_name)
+        # display_patient_name_value.grid(column=1, row=3, sticky="E")
+        #
+        # display_patient_hr_value = ttk.Label(root, text=pat_hr)
+        # display_patient_hr_value.grid(column=1, row=4, sticky="E")
+        #
+        # display_ecg_value = ttk.Label(root)
+        # display_ecg_value.grid(column=1, row=5, sticky="E")
+        #
+        # display_timestamp_value = ttk.Label(root, text=pat_time)
+        # display_timestamp_value.grid(column=1, row=6, sticky="E")
+        return
 
     def cancel():
         root.destroy()
+
+    def reset():
+        return
 
     root = tk.Tk()
     root.title("Monitoring Station User Interface")
@@ -109,7 +112,7 @@ def design_window():
     past_ecg_box.grid(column=1, row=7)
 
     past_ecg_button = ttk.Button(root, text="Load Data",
-                                 command=load_past_ecg_image)
+                                 command=load_ecg_image)
     past_ecg_button.grid(column=2, row=7)
 
     load_image_text = ttk.Label(root, text="Load Medical Image")
@@ -129,9 +132,9 @@ def design_window():
                              command=cancel)
     exit_button.grid(column=2, row=9)
 
-    # reset_button = ttk.Button(root, text="Reset Data",
-    #                           command=reset)
-    # reset_button.grid(column=1, row=9)
+    reset_button = ttk.Button(root, text="Reset Data",
+                              command=reset)
+    reset_button.grid(column=1, row=9)
 
     root.mainloop()
 
