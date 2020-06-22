@@ -20,7 +20,9 @@ def get_available_patient_ids():
 
 def load_patient_data():
     # I think that I will store everything in a dictionary
-    return
+    test_dict = {"Name": "Canyon", "Patient ID": "1",
+                 "Heart Rate": "60", "timestamp": "3:00"}
+    return test_dict
 
 
 def get_past_ecg_files():
@@ -49,21 +51,10 @@ def design_window():
         pat_time = patient_dict["timestamp"]
         ecg_file = load_ecg_image(pat_time)
 
-        display_patient_id_value = ttk.Label(root, text=pat_id)
-        display_patient_id_value.grid(column=1, row=2, sticky="E")
-
-        display_patient_name_value = ttk.Label(root, text=pat_name)
-        display_patient_name_value.grid(column=1, row=3, sticky="E")
-
-        display_patient_hr_value = ttk.Label(root, text=pat_hr)
-        display_patient_hr_value.grid(column=1, row=4, sticky="E")
-
-        display_ecg_value = ttk.Label(root)
-        display_ecg_value.grid(column=1, row=5, sticky="E")
-
-        display_timestamp_value = ttk.Label(root, text=pat_time)
-        display_timestamp_value.grid(column=1, row=6, sticky="E")
-        return
+        display_patient_id_value.configure(text=pat_id)
+        display_patient_name_value.configure(text=pat_name)
+        display_patient_hr_value.configure(text=pat_hr)
+        display_timestamp_value.configure(text=pat_time)
 
     def cancel():
         root.destroy()
@@ -74,11 +65,11 @@ def design_window():
         nonlocal display_patient_hr_value
         nonlocal display_timestamp_value
         nonlocal display_ecg_value
-        display_patient_id_value.destroy()
-        display_patient_name_value.destroy()
-        display_patient_hr_value.destroy()
-        display_timestamp_value.destroy()
-        display_ecg_value.destroy()
+
+        display_patient_id_value.configure(text="")
+        display_patient_name_value.configure(text="")
+        display_patient_hr_value.configure(text="")
+        display_timestamp_value.configure(text="")
 
     root = tk.Tk()
     root.title("Monitoring Station User Interface")
@@ -111,6 +102,21 @@ def design_window():
     display_timestamp_text = ttk.Label(root,
                                        text="Time of Most Recent Reading:")
     display_timestamp_text.grid(column=0, row=6)
+
+    display_patient_id_value = ttk.Label(root)
+    display_patient_id_value.grid(column=1, row=2, sticky="E")
+
+    display_patient_name_value = ttk.Label(root)
+    display_patient_name_value.grid(column=1, row=3, sticky="E")
+
+    display_patient_hr_value = ttk.Label(root)
+    display_patient_hr_value.grid(column=1, row=4, sticky="E")
+
+    display_ecg_value = ttk.Label(root)
+    display_ecg_value.grid(column=1, row=5, sticky="E")
+
+    display_timestamp_value = ttk.Label(root)
+    display_timestamp_value.grid(column=1, row=6, sticky="E")
 
     past_ecg_text = ttk.Label(root, text="Load Past ECG")
     past_ecg_text.grid(column=0, row=7)
