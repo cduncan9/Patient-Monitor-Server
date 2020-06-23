@@ -11,9 +11,12 @@ class TestPatient(MongoModel):
 
 
 def add_to_db_test():
-    patient_test = TestPatient(patient_id=1000, patient_name="Canyon",
-                               heart_rate=[70], timestamp=['2020-6-23 1:34:20'],
-                               ecg_images=['test string'], medical_images=['test string'])
+    patient_test = TestPatient(patient_id=1000,
+                               patient_name="Canyon",
+                               heart_rate=[70],
+                               timestamp=['2020-6-23 1:34:20'],
+                               ecg_images=['test string'],
+                               medical_images=['test string'])
     save_patient_test = patient_test.save()
     print(save_patient_test)
 
