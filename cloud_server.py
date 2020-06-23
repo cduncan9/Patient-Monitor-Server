@@ -17,7 +17,15 @@ class NewPatient(MongoModel):
     medical_images = fields.ListField()
 
 
+def init_db():
+    print("Connecting to database...")
+    connect("mongodb+srv://cduncan9:BME547@cluster0.conjj.mongodb.net/"
+            "finalproject?retryWrites=true&w=majority")
+    print("Database connected.")
+
+
 if __name__ == '__main__':
     logging.basicConfig(filename="code_status.log", filemode='w',
                         level=logging.DEBUG)
+    init_db()
     app.run()
