@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 import base64
 import io
 import matplotlib.image as mpimg
-
+import requests
 
 server_name = ""
 
@@ -15,7 +15,7 @@ def get_available_patient_ids():
     return
 
 
-def load_patient_data():
+def load_patient_data(patient_id):
     # This will make a request
     return
 
@@ -25,7 +25,7 @@ def get_past_ecg_files():
     return
 
 
-def load_ecg_image(timestamp):
+def load_ecg_image(patient_id, timestamp):
     # This will make a request
     return
 
@@ -51,16 +51,18 @@ def design_window():
         return
 
     def display_patient_data():
-        patient_dict = load_patient_data()
+        patient_dict = load_patient_data(patient_choice)
         pat_id = patient_dict["Patient ID"]
         pat_name = patient_dict["Name"]
         pat_hr = patient_dict["Heart Rate"]
         pat_time = patient_dict["timestamp"]
+        ecg_image = load_ecg_image(patient_choice, pat_time)
 
         display_patient_id_value.configure(text=pat_id)
         display_patient_name_value.configure(text=pat_name)
         display_patient_hr_value.configure(text=pat_hr)
         display_timestamp_value.configure(text=pat_time)
+        display_ecg_value.configure(command=display_image(ecg_image))
 
     def cancel():
         root.destroy()
@@ -83,8 +85,8 @@ def design_window():
     patient_id_text = ttk.Label(root, text="Select Patient ID")
     patient_id_text.grid(column=0, row=0)
 
-    file_choice = tk.StringVar()
-    patient_id_box = ttk.Combobox(root, textvariable=file_choice)
+    patient_choice = tk.StringVar()
+    patient_id_box = ttk.Combobox(root, textvariable=patient_choice)
     patient_id_box['values'] = get_available_patient_ids()
     patient_id_box.state(["readonly"])
     patient_id_box.grid(column=1, row=0)
