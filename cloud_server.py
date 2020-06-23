@@ -45,6 +45,12 @@ def init_db():
 
 
 # Route functions should be placed below this line
+@app.route("/api/new_patient", methods=['POST'])
+def add_patient():
+    in_data = request.get_json()
+    name = add_patient_to_db(in_data)
+
+
 @app.route("/patient_id_list", methods=['GET'])
 def get_patient_id_list():
     ret = list()

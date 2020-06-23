@@ -7,9 +7,14 @@ from ECG_analyis import mean_bpm
 from ECG_analyis import normalize_data
 import matplotlib.pyplot as plt
 import requests
+from cloud_server import NewPatient
 
+mrn_entry = 0
+name_entry = ""
+image_name = ""
+file_name = ""
 
-server_name = ""
+server_name = "http://127.0.0.1:5000"
 
 
 def load_image_for_display(file_name):
@@ -25,9 +30,10 @@ def convert_file_to_b64str(fn):
     return b64_string
 
 
-def send_b64img_to_server(b64_str):
-    r = requests.post(server_name+"/post_image", json=b64_str)
-    r = 200
+def send_patient_to_server():
+    info = [mrn_entry, name_entry, list(), list(), list(), list()]
+    r = requests.post(server_name+"/api/new_patient", json=info)
+    print(r.text)
     if r == 200:
         return "Good Post"
     else:
@@ -61,20 +67,6 @@ def design_window():
         plt.show()
         # result = mean_bpm(fn)
 
-    def upload_img():
-        im = image_name.get()
-        b64 = convert_file_to_b64str(im)
-        return_msg = send_b64img_to_server(b64)
-        ttk.Label(root, text=return_msg).grid(column=4, row=0)
-        result_label.configure(text=return_msg)
-
-    def upload_ECG():
-        fn = file_name.get()
-        b64 = convert_file_to_b64str(fn)
-        return_msg = send_b64img_to_server(b64)
-        ttk.Label(root, text=return_msg).grid(column=4, row=0)
-        result_label.configure(text=return_msg)
-
     def cancel():
         root.destroy()
 
@@ -101,8 +93,8 @@ def design_window():
     image_name_box = ttk.Entry(root, width=50, textvariable=image_name)
     image_name_box.grid(column=0, row=3)
 
-    image_button = ttk.Button(root, text="get image name", command=get_image())
-    image_button.grid(column=0, row=3)
+    image_button = ttk.Button(root, text="get image name", command=get_image)
+    image_button.grid(column=0, row=4)
 
     image_ok_button = ttk.Button(root, text="ok", command=load_image)
     image_ok_button.grid(column=1, row=3)
@@ -115,16 +107,21 @@ def design_window():
 
     file_name = tk.StringVar()
     file_name_box = ttk.Entry(root, width=50, textvariable=file_name)
-    file_name_box.grid(column=0, row=4)
+    file_name_box.grid(column=0, row=5)
 
-    file_button = ttk.Button(root, text="get filename", command=get_file())
-    file_button.grid(column=0, row=4)
+    file_button = ttk.Button(root, text="get filename", command=get_file)
+    file_button.grid(column=0, row=6)
 
     file_ok_button = ttk.Button(root, text="ok", command=load_ECG_trace)
-    file_ok_button.grid(column=1, row=4)
+    file_ok_button.grid(column=1, row=5)
+
+    upload_data_button = ttk.Button(root, width=20, text="upload to database",
+                                    command=send_patient_to_server)
+    upload_data_button.grid()
 
     root.mainloop()
     print("finished")
+
 
 if __name__ == "__main__":
     design_window()
