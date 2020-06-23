@@ -26,6 +26,17 @@ def check_patient_exists(patient_id):
     return True
 
 
+def add_patient_to_db(info):
+    patient = NewPatient(patient_id=info[0],
+                         patient_name=info[1],
+                         heart_rate=info[2],
+                         timestamp=info[3],
+                         ecg_images=info[4],
+                         medical_images=info[5])
+    patient.save()
+    return patient.patient_id
+
+
 def init_db():
     print("Connecting to database...")
     connect("mongodb+srv://cduncan9:BME547@cluster0.conjj.mongodb.net/"
