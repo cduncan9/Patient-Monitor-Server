@@ -47,7 +47,10 @@ def init_db():
 # Route functions should be placed below this line
 @app.route("/patient_id_list", methods=['GET'])
 def get_patient_id_list():
-    return
+    ret = list()
+    for patient in NewPatient.objects.raw({}):
+        ret.append(patient.patient_id)
+    return ret
 
 
 @app.route("/<patient_id>/ecg_image_list", methods=['GET'])
