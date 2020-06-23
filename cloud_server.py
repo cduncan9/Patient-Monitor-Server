@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 
 class NewPatient(MongoModel):
-    patient_id = fields.IntegerField()
+    patient_id = fields.IntegerField(primary_key=True)
     patient_name = fields.CharField()
     heart_rate = fields.ListField()
     timestamp = fields.ListField()
