@@ -25,27 +25,33 @@ def init_db():
 
 
 # Route functions should be placed below this line
+@app.route("/patient_id_list", methods=['GET'])
 def get_patient_id_list():
     return
 
 
-def get_ecg_image_list():
+@app.route("/<patient_id>/ecg_image_list", methods=['GET'])
+def get_ecg_image_list(patient_id):
     return
 
 
-def get_medical_image_list():
+@app.route("/<patient_id>/medical_image_list", methods=['GET'])
+def get_medical_image_list(patient_id):
     return
 
 
-def load_recent_patient_data():
+@app.route("/<patient_id>/load_recent_data", methods=['GET'])
+def load_recent_patient_data(patient_id):
     return
 
 
-def load_ecg_image():
+@app.route("/<patient_id>/load_ecg_image/<ecg_image>", methods=['GET'])
+def load_ecg_image(patient_id, ecg_image):
     return
 
 
-def load_medical_image():
+@app.route("/<patient_id>/load_medical_image/<medical_image>", methods=['GET'])
+def load_medical_image(patient_id, medical_image):
     return
 
 
