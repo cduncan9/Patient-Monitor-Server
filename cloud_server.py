@@ -24,6 +24,31 @@ def init_db():
     print("Database connected.")
 
 
+# Route functions should be placed below this line
+def get_patient_id_list():
+    return
+
+
+def get_ecg_image_list():
+    return
+
+
+def get_medical_image_list():
+    return
+
+
+def load_recent_patient_data():
+    return
+
+
+def load_ecg_image():
+    return
+
+
+def load_medical_image():
+    return
+
+
 if __name__ == '__main__':
     logging.basicConfig(filename="code_status.log", filemode='w',
                         level=logging.DEBUG)
