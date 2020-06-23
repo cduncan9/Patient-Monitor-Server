@@ -15,12 +15,17 @@ def get_available_patient_ids():
     return
 
 
-def load_patient_data(patient_id):
+def get_past_ecg_files():
     # This will make a request
     return
 
 
-def get_past_ecg_files():
+def get_image_files():
+    # this will make a request
+    return
+
+
+def load_patient_data(patient_id):
     # This will make a request
     return
 
@@ -30,17 +35,22 @@ def load_ecg_image(patient_id, timestamp):
     return
 
 
-def get_image_file():
-    # this will make a request
-    return
-
-
 def load_medical_image(timestamp):
     # this will make a request
     return
 
 
 def design_window():
+
+    def display_ecg_image():
+        # Edit this more
+        ecg_image = load_ecg_image(patient_choice, past_ecg_file)
+        display_image(ecg_image)
+
+    def display_medical_image():
+        # Edit this more
+        medical_image = load_medical_image(load_image_file)
+        display_image(medical_image)
 
     def display_image(base64_string):
         image_bytes = base64.b64decode(base64_string)
@@ -136,7 +146,7 @@ def design_window():
     past_ecg_box.grid(column=1, row=7)
 
     past_ecg_button = ttk.Button(root, text="Load Data",
-                                 command=load_ecg_image)
+                                 command=display_ecg_image)
     past_ecg_button.grid(column=2, row=7)
 
     load_image_text = ttk.Label(root, text="Load Medical Image")
@@ -144,12 +154,12 @@ def design_window():
 
     load_image_file = tk.StringVar()
     load_image_box = ttk.Combobox(root, textvariable=load_image_file)
-    load_image_box['values'] = get_image_file()
+    load_image_box['values'] = get_image_files()
     load_image_box.state(['readonly'])
     load_image_box.grid(column=1, row=8)
 
     load_image_button = ttk.Button(root, text="Load Image",
-                                   command=load_medical_image)
+                                   command=display_medical_image)
     load_image_button.grid(column=2, row=8)
 
     exit_button = ttk.Button(root, text="Exit",
