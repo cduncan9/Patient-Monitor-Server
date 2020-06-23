@@ -11,10 +11,8 @@ init_db()
                             ['test string'], ['test string']], 1000),
                           ([2000, "Aidan", [65], ['2020-6-23 1:35:20'],
                             ['test string'], ['test string']], 2000),
-                          [4000, "Johnathan", [55], ['2020-6-23 1:24:20'],
-                           ['test string'], ['test string']], 4000)
-
-])
+                          ([4000, "Johnathan", [55], ['2020-6-23 1:24:20'],
+                           ['test string'], ['test string']], 4000)])
 def test_add_patient_to_db(info, expected):
     from cloud_server import add_patient_to_db
     answer = add_patient_to_db(info)
@@ -33,8 +31,8 @@ def test_check_patient_exists(patient_id, expected):
 
 
 @pytest.mark.parametrize('expected',
-                         [(1000, 2000, 4000)])
-def test_check_patient_exists(expected):
+                         [[1000, 2000, 4000]])
+def test_get_patient_list(expected):
     from cloud_server import get_patient_id_list
     answer = get_patient_id_list()
     assert answer == expected
