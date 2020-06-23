@@ -3,6 +3,7 @@ from datetime import datetime
 import requests
 import logging
 from pymodm import connect, MongoModel, fields
+from pymodm import errors as pymodm_errors
 
 
 app = Flask(__name__)
@@ -15,6 +16,14 @@ class NewPatient(MongoModel):
     timestamp = fields.ListField()
     ecg_images = fields.ListField()
     medical_images = fields.ListField()
+
+
+def check_patient_exists(patient_id):
+    try:
+        db_item = NewPatient.objects.raw({"_id": patient_id})
+    except pymodm_errors.DoesNotExist:
+        return False
+    return True
 
 
 def init_db():
