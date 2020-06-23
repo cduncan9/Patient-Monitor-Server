@@ -20,7 +20,7 @@ class NewPatient(MongoModel):
 
 def check_patient_exists(patient_id):
     try:
-        db_item = NewPatient.objects.raw({"_id": patient_id})
+        db_item = NewPatient.objects.raw({"_id": patient_id}).first()
     except pymodm_errors.DoesNotExist:
         return False
     return True
