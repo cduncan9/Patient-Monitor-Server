@@ -5,3 +5,5 @@ flask
 requests
 matplotlib
 scipy
+pymodm
+dnspython
