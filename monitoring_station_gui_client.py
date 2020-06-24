@@ -142,10 +142,10 @@ def design_window():
         save_medical_image(medical_image)
         text = "Image from {}".format(load_image_file.get())
         display_past_ecg_text.configure(text=text)
-        save_medical_image_button = ttk.Button(root, text="Save Medical Image",
-                                               command=lambda:
-                                               save_medical_to_files(medical_image))
-        save_medical_image_button.grid(column=2, row=6)
+        save_image_button = ttk.Button(root, text="Save Medical Image",
+                                       command=lambda:
+                                       save_medical_to_files(medical_image))
+        save_image_button.grid(column=2, row=6)
         load_medical()
 
     def display_patient_data():
