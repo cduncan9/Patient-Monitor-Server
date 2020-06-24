@@ -70,6 +70,10 @@ def get_ecg_string(patient_id, timestamp):
     return ''
 
 
+def get_latest_data(patient_id):
+    return
+
+
 # Verification functions
 def verify_patient_id(patient_id):
     if type(patient_id) == int:
@@ -125,7 +129,14 @@ def get_medical_image_list(patient_id):
 @app.route("/<patient_id>/load_recent_data", methods=['GET'])
 def load_recent_patient_data(patient_id):
     # Verify that the patient_id exists
-    return
+    verify_id = verify_patient_id(patient_id)
+    if verify_id is False:
+        return jsonify([])
+    check = check_patient_exists(verify_id)
+    if check is not True:
+        return jsonify([])
+    data = get_latest_data(verify_id)
+    return jsonify(data)
 
 
 @app.route("/<patient_id>/load_ecg_image/<timestamp>", methods=['GET'])
