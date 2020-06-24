@@ -139,7 +139,7 @@ def design_window():
     image_ok_button.grid(column=1, row=3)
 
     image_label = ttk.Label(root)
-    image_label.grid(column=0, row=0)
+    image_label.grid(column=1, row=7)
 
     result_label = ttk.Label(root)
     result_label.grid(column=4, row=1)
