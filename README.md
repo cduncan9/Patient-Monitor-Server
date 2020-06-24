@@ -47,5 +47,6 @@ The patient-side client is used to populate the database that stores patient inf
 ## Access This Server
 
 ## Git Status Badge
+[![Build Status](https://travis-ci.com/BME547-Summer2020/final-project-duncan-therien.svg?token=RLd1CpbXx8eP2MxfSyyp&branch=master)](https://travis-ci.com/BME547-Summer2020/final-project-duncan-therien)
 
 ## Software License 
