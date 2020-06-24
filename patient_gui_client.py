@@ -41,8 +41,6 @@ def convert_plot_to_b64str():
 
 
 def send_patient_to_server(mrn_val, name, hr, timestamp, ecg, image):
-    im = list()
-    plot = list()
     info = [mrn_val, name, hr, timestamp, ecg, image]
     r = requests.post(server_name+"/api/new_patient", json=info)
     print(r.text)

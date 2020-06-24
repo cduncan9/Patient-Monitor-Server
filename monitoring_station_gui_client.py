@@ -12,19 +12,20 @@ server_name = "http://127.0.0.1:5000"
 
 def get_available_patient_ids():
     # This will make a request
-    r = requests.get(server_name+"/patient_id_list")
+    r = requests.get(server_name + "/patient_id_list")
     return r.json()
 
 
 def get_past_ecg_files(patient_id):
     # This will make a request
-    r = requests.get(server_name+"/"+patient_id+"/ecg_image_list")
+    r = requests.get(server_name + "/<patient_id>/ecg_image_list")
     return r.json()
 
 
 def get_image_files():
     # this will make a request
-    return
+    r = requests.get(server_name + "/<patient_id>/medical_image_list")
+    return r.json()
 
 
 def load_patient_data(patient_id):
@@ -50,7 +51,7 @@ def design_window():
     def display_ecg_image():
         # Edit this more
         ecg_image = load_ecg_image(patient_choice, past_ecg_file)
-        display_image(ecg_image)
+        display_image(ecg_image)0
 
     def display_medical_image():
         # Edit this more
