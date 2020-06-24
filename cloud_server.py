@@ -61,7 +61,13 @@ def retrieve_patient_id_list():
 
 
 def get_ecg_string(patient_id, timestamp):
-    return
+    patient = NewPatient.objects.raw({"_id": patient_id}).first()
+    times = patient.timestamp
+    ecg_list = patient.ecg_images
+    for i in range(len(times)):
+        if times[i] == timestamp:
+            return ecg_list[i]
+    return ''
 
 
 # Verification functions

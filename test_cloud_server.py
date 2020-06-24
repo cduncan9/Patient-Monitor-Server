@@ -12,7 +12,8 @@ init_db()
                           ([2000, "Aidan", [65], ['2020-6-21 1:35:20',
                                                   '2020-6-22 1:35:20',
                                                   '2020-6-23 1:35:20'],
-                            ['test string'], ['test string']], 2000),
+                            ['test string 1', 'test string 2', 'test string 3'],
+                            ['test string']], 2000),
                           ([4000, "Johnathan", [55], ['2020-6-23 1:24:20'],
                            ['test string'], ['test string']], 4000)])
 def test_add_patient_to_db(info, expected):
@@ -76,8 +77,8 @@ def test_verify_timestamp_exists(patient_id, time, expected):
 @pytest.mark.parametrize("patient_id, timestamp, expected",
                          [(1000, '2020-6-23 1:34:20',
                            'test string'),
-                          (2000, '2020-6-21 1:34:20',
-                           'test string')])
+                          (2000, '2020-6-21 1:35:20',
+                           'test string 1')])
 def test_get_ecg_string(patient_id, timestamp, expected):
     from cloud_server import get_ecg_string
     answer = get_ecg_string(patient_id, timestamp)
