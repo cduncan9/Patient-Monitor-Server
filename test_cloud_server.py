@@ -2,7 +2,6 @@ import pytest
 from pymodm import connect, MongoModel, fields
 from cloud_server import NewPatient
 from cloud_server import init_db
-from flask import jsonify
 
 init_db()
 

@@ -87,13 +87,13 @@ def get_patient_id_list():
 # This is actually getting a list of timestamps
 @app.route("/<patient_id>/ecg_image_list", methods=['GET'])
 def get_ecg_image_list(patient_id):
-    verify = verify_patient_id(patient_id)
-    if verify is not True:
-        return "{} is not a proper patient_id".format(patient_id)
-    check = check_patient_exists(patient_id)
+    verify_id = verify_patient_id(patient_id)
+    if verify_id is False:
+        return jsonify([])
+    check = check_patient_exists(verify_id)
     if check is not True:
-        return "Patient {} is not in the database".format(patient_id)
-    return jsonify(retrieve_timestamps(patient_id))
+        return jsonify([])
+    return jsonify(retrieve_timestamps(verify_id))
 
 
 @app.route("/<patient_id>/medical_image_list", methods=['GET'])
