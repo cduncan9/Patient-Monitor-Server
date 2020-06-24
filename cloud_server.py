@@ -48,6 +48,14 @@ def init_db():
     print("Database connected.")
 
 
+# Verification functions
+def verify_patient_id(patient_id):
+    if type(patient_id) == str:
+        if patient_id.isdigit():
+            return int(patient_id)
+    return False
+
+
 # Route functions should be placed below this line
 @app.route("/api/new_patient", methods=['POST'])
 def add_patient():
@@ -68,6 +76,10 @@ def get_patient_id_list():
 @app.route("/<patient_id>/ecg_image_list", methods=['GET'])
 def get_ecg_image_list(patient_id):
     # Verify that the patient_id exists
+    verify = verify_patient_id(patient_id)
+    check = check_patient_exists(patient_id)
+    if check is not True:
+        return "Patient {} is not in the database".format(patient_id)
     return
 
 
