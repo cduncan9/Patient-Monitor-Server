@@ -9,6 +9,7 @@ import requests
 
 server_name = "http://127.0.0.1:5000"
 
+
 def load_image_for_display(file_name):
     image_object = Image.open(file_name)
     tk_image = ImageTk.PhotoImage(image_object)
@@ -51,6 +52,11 @@ def load_medical_image(timestamp):
 
 def design_window():
 
+    def load_ecg():
+        tk_image = load_image_for_display("temp_image")
+        display_past_ecg_value.configure(image=tk_image)
+        display_past_ecg_value.image = tk.image
+
     def ecg_list():
         return get_past_ecg_files(patient_choice.get())
 
@@ -59,6 +65,7 @@ def design_window():
         ecg_image = load_ecg_image(patient_choice.get(),
                                    past_ecg_file.get())
         save_ecg_image(ecg_image)
+        load_ecg()
 
     def save_ecg_image(ecg_image):
         image_bytes = base64.b64decode(ecg_image)
@@ -67,15 +74,6 @@ def design_window():
 
     def display_medical_image():
         # Edit this more
-        medical_image = load_medical_image(load_image_file)
-        display_image(medical_image)
-
-    def display_image(base64_string):
-        image_bytes = base64.b64decode(base64_string)
-        image_buf = io.BytesIO(image_bytes)
-        i = mpimg.imread(image_buf, format='JPG')
-        plt.imshow(i, interpolation='nearest')
-        plt.show()
         return
 
     def display_patient_data():
