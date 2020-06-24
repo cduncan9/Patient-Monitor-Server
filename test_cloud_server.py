@@ -71,3 +71,14 @@ def test_verify_timestamp_exists(patient_id, time, expected):
     from cloud_server import verify_timestamp_exists
     answer = verify_timestamp_exists(patient_id, time)
     assert answer == expected
+
+
+@pytest.mark.parametrize("patient_id, timestamp, expected",
+                         [(1000, '2020-6-23 1:34:20',
+                           'test string'),
+                          (2000, '2020-6-21 1:34:20',
+                           'test string')])
+def test_get_ecg_string(patient_id, timestamp, expected):
+    from cloud_server import get_ecg_string
+    answer = get_ecg_string(patient_id, timestamp)
+    assert answer == expected
