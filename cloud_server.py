@@ -49,7 +49,8 @@ def add_patient_to_db(info):
 
 
 def retrieve_timestamps(patient_id):
-    return
+    patient = NewPatient.objects.raw({"_id": patient_id}).first()
+    return patient.timestamp
 
 
 # Verification functions
@@ -88,8 +89,7 @@ def get_ecg_image_list(patient_id):
     check = check_patient_exists(patient_id)
     if check is not True:
         return "Patient {} is not in the database".format(patient_id)
-    ecg_list = retrieve_timestamps(patient_id)
-    return
+    return retrieve_timestamps(patient_id)
 
 
 @app.route("/<patient_id>/medical_image_list", methods=['GET'])
