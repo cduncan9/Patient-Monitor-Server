@@ -8,18 +8,32 @@ init_db()
 
 @pytest.mark.parametrize('info, expected',
                          [([1000, "Canyon", [70], ['2020-6-23 1:34:20'],
-                            ['test string'], ['test string']], 1000),
+                            ['test string'], ['test string']], True),
                           ([2000, "Aidan", [65], ['2020-6-21 1:35:20',
                                                   '2020-6-22 1:35:20',
                                                   '2020-6-23 1:35:20'],
                             ['test string 1', 'test string 2',
                              'test string 3'],
-                            ['test string']], 2000),
+                            ['test string']], True),
                           ([4000, "Johnathan", [55], ['2020-6-23 1:24:20'],
-                            ['test string'], ['test string']], 4000)])
-def test_add_patient_to_db(info, expected):
-    from cloud_server import add_patient_to_db
-    answer = add_patient_to_db(info)
+                            ['test string'], ['test string']], True)])
+def test_add_new_patient(info, expected):
+    from cloud_server import add_new_patient
+    answer = add_new_patient(info)
+    assert answer == expected
+
+
+@pytest.mark.parametrize('info, expected',
+                         [([1000, "Canyon", [70], ['2020-6-23 1:34:20'],
+                            ['test string'], ['test string']], True),
+                          ([2000, "Aidan", [65], ['2020-6-21 1:35:20'],
+                            ['test string 1'],
+                            ['test string']], True),
+                          ([4000, "Johnathan", [55], ['2020-6-23 1:24:20'],
+                            ['test string'], ['test string']], True)])
+def test_append_to_patient(info, expected):
+    from cloud_server import append_to_patient
+    answer = append_to_patient(info)
     assert answer == expected
 
 
@@ -29,7 +43,6 @@ def test_add_patient_to_db(info, expected):
                           (3000, False)])
 def test_check_patient_exists(patient_id, expected):
     from cloud_server import check_patient_exists
-    from cloud_server import add_patient_to_db
     answer = check_patient_exists(patient_id)
     assert answer == expected
 
@@ -56,8 +69,10 @@ def test_verify_patient_id(pat_id, expected):
 @pytest.mark.parametrize("patient_id, expected",
                          [(2000, ['2020-6-21 1:35:20',
                                   '2020-6-22 1:35:20',
-                                  '2020-6-23 1:35:20']),
-                          (1000, ['2020-6-23 1:34:20'])])
+                                  '2020-6-23 1:35:20',
+                                  '2020-6-21 1:35:20']),
+                          (1000, ['2020-6-23 1:34:20',
+                                  '2020-6-23 1:34:20'])])
 def test_retrieve_timestamps(patient_id, expected):
     from cloud_server import retrieve_timestamps
     answer = retrieve_timestamps(patient_id)
@@ -111,8 +126,8 @@ def test_get_ecg_string(list_in, key, expected):
 @pytest.mark.parametrize("patient_id, expected",
                          [(1000, [1000, "Canyon", 70, '2020-6-23 1:34:20',
                                   'test string']),
-                          (2000, [2000, "Aidan", 65, '2020-6-23 1:35:20',
-                                  'test string 3'])])
+                          (2000, [2000, "Aidan", 65, '2020-6-21 1:35:20',
+                                  'test string 1'])])
 def test_get_latest_data(patient_id, expected):
     from cloud_server import get_latest_data
     answer = get_latest_data(patient_id)
