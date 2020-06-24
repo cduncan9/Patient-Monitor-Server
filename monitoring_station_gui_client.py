@@ -49,7 +49,8 @@ def load_ecg_image(patient_id, timestamp):
 
 
 def load_medical_image(patient_id, filename):
-    r = requests.get(server_name + "/" + patient_id + "/load_medical_image/" + filename)
+    r = requests.get(server_name + "/" + patient_id +
+                     "/load_medical_image/" + filename)
     fn = r.json()
     fh = open(filename, "wb")
     fh.write(str.decode('base64'))

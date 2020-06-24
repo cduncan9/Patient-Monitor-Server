@@ -59,7 +59,8 @@ def design_window():
                                [datetime.strftime(datetime.now(),
                                                   "%Y-%m-%d %H:%M:%S")],
                                [load_ECG_trace()[1]],
-                               [convert_file_to_b64str(image_name.get()), file_name.get()])
+                               [convert_file_to_b64str(image_name.get()),
+                                file_name.get()])
 
     def get_file():
         fn = filedialog.askopenfilename()
