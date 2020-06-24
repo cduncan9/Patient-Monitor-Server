@@ -53,7 +53,7 @@ def send_patient_to_server(mrn_val, name, hr, timestamp, ecg, image):
 def design_window():
 
     def send_patient():
-        fn = file_name.get().split("/")
+        fn = image_name.get().split("/")
         name = fn[-1]
         send_patient_to_server(mrn_entry.get(),
                                name_entry.get(),

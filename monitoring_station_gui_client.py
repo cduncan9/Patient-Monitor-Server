@@ -67,6 +67,17 @@ def design_window():
         with open(file, "wb") as out_file:
             out_file.write(image_bytes)
 
+    def save_medical_to_files(medical_image):
+        files = [('All Files', '*.*'),
+                 ('PNG', '*.png'),
+                 ('JPEG', '*.jpg')]
+        file = asksaveasfile(filetypes=files, defaultextension=files)
+        if not file:
+            return
+        image_bytes = base64.b64decode(medical_image)
+        with open(file, "wb") as out_file:
+            out_file.write(image_bytes)
+
     def load_medical():
         tk_image = load_image_for_display("med_image")
         display_past_ecg_value.image = tk_image
@@ -130,6 +141,11 @@ def design_window():
         print(medical_image)
         save_medical_image(medical_image)
         text = "Image from {}".format(load_image_file.get())
+        display_past_ecg_text.configure(text=text)
+        save_medical_image_button = ttk.Button(root, text="Save Medical Image",
+                                               command=lambda:
+                                               save_medical_to_files(medical_image))
+        save_medical_image_button.grid(column=2, row=6)
         load_medical()
 
     def display_patient_data():

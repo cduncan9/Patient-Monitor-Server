@@ -177,12 +177,12 @@ def load_ecg_image(patient_id, timestamp):
 
 
 @app.route("/<patient_id>/load_medical_image/<medical_image>", methods=['GET'])
-def load_medical_image(patient_id, filename):
+def load_medical_image(patient_id, medical_image):
     patient_id = int(patient_id)
     if check_patient_exists(patient_id):
-        patient = NewPatient.objects.raw({"_id": patient_id})
-        print(find_key(patient.medical_images, filename))
-        return jsonify(find_key(patient.medical_images, filename))
+        patient = NewPatient.objects.raw({"_id": patient_id}).first()
+        print(find_key(patient.medical_images, medical_image))
+        return jsonify(find_key(patient.medical_images, medical_image))
     return "Image not found", 400
 
 
