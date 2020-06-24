@@ -12,7 +12,8 @@ init_db()
                           ([2000, "Aidan", [65], ['2020-6-21 1:35:20',
                                                   '2020-6-22 1:35:20',
                                                   '2020-6-23 1:35:20'],
-                            ['test string 1', 'test string 2', 'test string 3'],
+                            ['test string 1', 'test string 2',
+                             'test string 3'],
                             ['test string']], 2000),
                           ([4000, "Johnathan", [55], ['2020-6-23 1:24:20'],
                            ['test string'], ['test string']], 4000)])
