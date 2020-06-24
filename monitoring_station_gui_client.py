@@ -7,17 +7,19 @@ import io
 import matplotlib.image as mpimg
 import requests
 
-server_name = ""
+server_name = "http://127.0.0.1:5000"
 
 
 def get_available_patient_ids():
     # This will make a request
-    return
+    r = requests.get(server_name+"/patient_id_list")
+    return r.json()
 
 
-def get_past_ecg_files():
+def get_past_ecg_files(patient_id):
     # This will make a request
-    return
+    r = requests.get(server_name+"/"+patient_id+"/ecg_image_list")
+    return r.json()
 
 
 def get_image_files():
@@ -42,6 +44,9 @@ def load_medical_image(timestamp):
 
 def design_window():
 
+    def ecg_list():
+        return get_past_ecg_files(patient_choice.get())
+
     def display_ecg_image():
         # Edit this more
         ecg_image = load_ecg_image(patient_choice, past_ecg_file)
@@ -61,18 +66,20 @@ def design_window():
         return
 
     def display_patient_data():
-        patient_dict = load_patient_data(patient_choice)
-        pat_id = patient_dict["Patient ID"]
-        pat_name = patient_dict["Name"]
-        pat_hr = patient_dict["Heart Rate"]
-        pat_time = patient_dict["timestamp"]
-        ecg_image = load_ecg_image(patient_choice, pat_time)
+        # patient_dict = load_patient_data(patient_choice)
+        # pat_id = patient_dict["Patient ID"]
+        # pat_name = patient_dict["Name"]
+        # pat_hr = patient_dict["Heart Rate"]
+        # pat_time = patient_dict["timestamp"]
+        # ecg_image = load_ecg_image(patient_choice, pat_time)
 
-        display_patient_id_value.configure(text=pat_id)
-        display_patient_name_value.configure(text=pat_name)
-        display_patient_hr_value.configure(text=pat_hr)
-        display_timestamp_value.configure(text=pat_time)
-        display_ecg_value.configure(command=display_image(ecg_image))
+        past_ecg_box['values'] = ecg_list()
+
+        # display_patient_id_value.configure(text=pat_id)
+        # display_patient_name_value.configure(text=pat_name)
+        # display_patient_hr_value.configure(text=pat_hr)
+        # display_timestamp_value.configure(text=pat_time)
+        # display_ecg_value.configure(command=display_image(ecg_image))
 
     def cancel():
         root.destroy()
@@ -141,7 +148,6 @@ def design_window():
 
     past_ecg_file = tk.StringVar()
     past_ecg_box = ttk.Combobox(root, textvariable=past_ecg_file)
-    past_ecg_box['values'] = get_past_ecg_files()
     past_ecg_box.state(['readonly'])
     past_ecg_box.grid(column=1, row=7)
 
