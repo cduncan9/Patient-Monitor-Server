@@ -2,6 +2,7 @@ import pytest
 from pymodm import connect, MongoModel, fields
 from cloud_server import NewPatient
 from cloud_server import init_db
+from flask import jsonify
 
 init_db()
 
@@ -35,8 +36,8 @@ def test_check_patient_exists(patient_id, expected):
 @pytest.mark.parametrize('expected',
                          [[1000, 2000, 4000]])
 def test_get_patient_list(expected):
-    from cloud_server import get_patient_id_list
-    answer = get_patient_id_list()
+    from cloud_server import retrieve_patient_id_list
+    answer = retrieve_patient_id_list()
     assert answer == expected
 
 

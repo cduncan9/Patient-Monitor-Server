@@ -53,6 +53,13 @@ def retrieve_timestamps(patient_id):
     return patient.timestamp
 
 
+def retrieve_patient_id_list():
+    ret = list()
+    for patient in NewPatient.objects.raw({}):
+        ret.append(patient.patient_id)
+    return ret
+
+
 # Verification functions
 def verify_patient_id(patient_id):
     if type(patient_id) == int:
@@ -74,10 +81,7 @@ def add_patient():
 
 @app.route("/patient_id_list", methods=['GET'])
 def get_patient_id_list():
-    ret = list()
-    for patient in NewPatient.objects.raw({}):
-        ret.append(patient.patient_id)
-    return ret
+    return jsonify(retrieve_patient_id_list())
 
 
 # This is actually getting a list of timestamps
@@ -89,7 +93,7 @@ def get_ecg_image_list(patient_id):
     check = check_patient_exists(patient_id)
     if check is not True:
         return "Patient {} is not in the database".format(patient_id)
-    return retrieve_timestamps(patient_id)
+    return jsonify(retrieve_timestamps(patient_id))
 
 
 @app.route("/<patient_id>/medical_image_list", methods=['GET'])
