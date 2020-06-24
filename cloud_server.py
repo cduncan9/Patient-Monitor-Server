@@ -50,6 +50,8 @@ def init_db():
 
 # Verification functions
 def verify_patient_id(patient_id):
+    if type(patient_id) == int:
+        return patient_id
     if type(patient_id) == str:
         if patient_id.isdigit():
             return int(patient_id)
@@ -77,6 +79,8 @@ def get_patient_id_list():
 def get_ecg_image_list(patient_id):
     # Verify that the patient_id exists
     verify = verify_patient_id(patient_id)
+    if verify is not True:
+        return "{} is not a proper patient_id".format(patient_id)
     check = check_patient_exists(patient_id)
     if check is not True:
         return "Patient {} is not in the database".format(patient_id)

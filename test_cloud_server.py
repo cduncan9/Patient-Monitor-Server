@@ -36,3 +36,14 @@ def test_get_patient_list(expected):
     from cloud_server import get_patient_id_list
     answer = get_patient_id_list()
     assert answer == expected
+
+
+@pytest.mark.parametrize("pat_id, expected",
+                         [("1", 1),
+                          ("50000", 50000),
+                          (2, 2),
+                          ('chocolate', False)])
+def test_verify_patient_id(pat_id, expected):
+    from cloud_server import verify_patient_id
+    answer = verify_patient_id(pat_id)
+    assert answer == expected
