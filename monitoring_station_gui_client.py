@@ -6,6 +6,7 @@ import base64
 import io
 import matplotlib.image as mpimg
 import requests
+from tkinter.filedialog import asksaveasfile
 
 server_name = "http://127.0.0.1:5000"
 
@@ -53,6 +54,17 @@ def load_medical_image(timestamp):
 
 def design_window():
 
+    def save_ecg_to_files(ecg_image):
+        files = [('All Files', '*.*'),
+                 ('PNG', '*.png'),
+                 ('JPEG', '*.jpg')]
+        file = asksaveasfile(filetypes=files, defaultextension=files)
+        if not file:
+            return
+        image_bytes = base64.b64decode(ecg_image)
+        with open(file, "wb") as out_file:
+            out_file.write(image_bytes)
+
     def load_ecg():
         tk_image = load_image_for_display("temp_image")
         display_past_ecg_value.configure(image=tk_image)
@@ -73,7 +85,8 @@ def design_window():
         save_ecg_image(ecg_image)
         past_text = "ECG from {}".format(past_ecg_file.get())
         display_past_ecg_text.configure(text=past_text)
-        save_past_ecg_button = ttk.Button(root, text="Save Past ECG Image")
+        save_past_ecg_button = ttk.Button(root, text="Save Past ECG Image",
+                                          command=lambda: save_ecg_to_files(ecg_image))
         save_past_ecg_button.grid(column=2, row=6)
         load_ecg()
 
