@@ -28,11 +28,15 @@ def check_patient_exists(patient_id):
 
 def add_patient_to_db(info):
     patient = NewPatient(patient_id=info[0],
-                         patient_name=info[1],
-                         heart_rate=info[2],
-                         timestamp=info[3],
-                         ecg_images=info[4],
-                         medical_images=info[5])
+                         patient_name=info[1])
+    if len(info[2]) > 0:
+        patient.heart_rate = info[2]
+    if len(info[3]) > 0:
+        patient.timestamp = info[3]
+    if len(info[4]) > 0:
+        patient.ecg_images = info[4]
+    if len(info[5]) > 0:
+        patient.medical_images = info[5]
     patient.save()
     return patient.patient_id
 
@@ -48,7 +52,9 @@ def init_db():
 @app.route("/api/new_patient", methods=['POST'])
 def add_patient():
     in_data = request.get_json()
+    # Should we verify this input?
     name = add_patient_to_db(in_data)
+    return "Patient added", 200
 
 
 @app.route("/patient_id_list", methods=['GET'])
