@@ -48,6 +48,10 @@ def add_patient_to_db(info):
     return patient.patient_id
 
 
+def retrieve_timestamps(patient_id):
+    return
+
+
 # Verification functions
 def verify_patient_id(patient_id):
     if type(patient_id) == int:
@@ -75,16 +79,16 @@ def get_patient_id_list():
     return ret
 
 
+# This is actually getting a list of timestamps
 @app.route("/<patient_id>/ecg_image_list", methods=['GET'])
 def get_ecg_image_list(patient_id):
-    # Verify that the patient_id exists
     verify = verify_patient_id(patient_id)
     if verify is not True:
         return "{} is not a proper patient_id".format(patient_id)
     check = check_patient_exists(patient_id)
     if check is not True:
         return "Patient {} is not in the database".format(patient_id)
-    ecg_list = retrieve_ecg_list(patient_id)
+    ecg_list = retrieve_timestamps(patient_id)
     return
 
 

@@ -9,7 +9,9 @@ init_db()
 @pytest.mark.parametrize('info, expected',
                          [([1000, "Canyon", [70], ['2020-6-23 1:34:20'],
                             ['test string'], ['test string']], 1000),
-                          ([2000, "Aidan", [65], ['2020-6-23 1:35:20'],
+                          ([2000, "Aidan", [65], ['2020-6-21 1:35:20',
+                                                  '2020-6-22 1:35:20',
+                                                  '2020-6-23 1:35:20'],
                             ['test string'], ['test string']], 2000),
                           ([4000, "Johnathan", [55], ['2020-6-23 1:24:20'],
                            ['test string'], ['test string']], 4000)])
@@ -46,4 +48,15 @@ def test_get_patient_list(expected):
 def test_verify_patient_id(pat_id, expected):
     from cloud_server import verify_patient_id
     answer = verify_patient_id(pat_id)
+    assert answer == expected
+
+
+@pytest.mark.parametrize("patient_id, expected",
+                         [(2000, ['2020-6-21 1:35:20',
+                                  '2020-6-22 1:35:20',
+                                  '2020-6-23 1:35:20']),
+                          (1000, ['2020-6-23 1:34:20'])])
+def test_retrieve_timestamps(patient_id, expected):
+    from cloud_server import retrieve_timestamps
+    answer = retrieve_timestamps(patient_id)
     assert answer == expected
