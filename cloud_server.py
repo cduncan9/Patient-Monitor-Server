@@ -34,17 +34,18 @@ def check_patient_exists(patient_id):
 
 
 def append_to_patient(info):
-    patient = NewPatient.objects.raw({"_id": info[0]}).first()
+    patient_id = int(info[0])
+    patient = NewPatient.objects.raw({"_id": patient_id}).first()
     if patient.patient_name != info[1]:
         patient.patient_name = info[1]
     if len(info[2]) > 0:
-        patient.heart_rate.append(info[2])
+        patient.heart_rate.append(info[2][0])
     if len(info[3]) > 0:
-        patient.timestamp.append(info[3])
+        patient.timestamp.append(info[3][0])
     if len(info[4]) > 0:
-        patient.ecg_images.append(info[4])
+        patient.ecg_images.append(info[4][0])
     if len(info[5]) > 0:
-        patient.medical_images.append(info[5])
+        patient.medical_images.append(info[5][0])
     patient.save()
     return True
 
@@ -130,7 +131,8 @@ def find_key(in_list, key):
 @app.route("/api/new_patient", methods=['POST'])
 def add_patient():
     in_data = request.get_json()
-    check = check_patient_exists(in_data[0])
+    verify_id = verify_patient_id(in_data[0])
+    check = check_patient_exists(verify_id)
     if check:
         append_to_patient(in_data)
     else:

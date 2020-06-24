@@ -105,6 +105,7 @@ def design_window():
         result = mean_bpm(fn)
         save_ecg_image(plot_hash)
         load_ecg()
+        return [result, plot_hash]
 
     def cancel():
         root.destroy()
