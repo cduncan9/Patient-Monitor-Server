@@ -111,6 +111,10 @@ def design_window():
         # Edit this more
         return
 
+    def new_patient():
+        reset()
+        display_patient_data()
+
     def display_patient_data():
         patient_data = load_patient_data(patient_choice.get())
         print(patient_data)
@@ -127,6 +131,7 @@ def design_window():
         display_patient_hr_value.configure(text=pat_hr)
         display_timestamp_value.configure(text=pat_time)
         display_recent_ecg_image(patient_data[4])
+        root.after(20000, display_patient_data)
 
     def cancel():
         root.destroy()
@@ -137,11 +142,21 @@ def design_window():
         nonlocal display_patient_hr_value
         nonlocal display_timestamp_value
         nonlocal display_ecg_value
+        nonlocal display_past_ecg_value
 
         display_patient_id_value.configure(text="")
         display_patient_name_value.configure(text="")
         display_patient_hr_value.configure(text="")
         display_timestamp_value.configure(text="")
+        display_past_ecg_text.configure(text="")
+        display_ecg_value.grid_remove()
+        display_ecg_value = ttk.Label(root)
+        display_ecg_value.grid(column=1, row=5)
+        display_past_ecg_value.grid_remove()
+        display_past_ecg_value = ttk.Label(root)
+        display_past_ecg_value.grid(column=2, row=5)
+        past_ecg_box['values'] = ""
+        past_ecg_file.set("")
 
     root = tk.Tk()
     root.title("Monitoring Station User Interface")
@@ -156,7 +171,7 @@ def design_window():
     patient_id_box.grid(column=1, row=0)
 
     load_patient_button = ttk.Button(root, text="Load Patient Data",
-                                     command=display_patient_data)
+                                     command=new_patient)
     load_patient_button.grid(column=2, row=0)
 
     display_patient_id_text = ttk.Label(root, text="Patient ID:")
