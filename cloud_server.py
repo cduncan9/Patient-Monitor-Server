@@ -135,7 +135,8 @@ def get_medical_image_list(patient_id):
     patient_id = int(patient_id)
     if check_patient_exists(patient_id):
         patient = NewPatient.objects.raw({"_id": patient_id}).first()
-        return jsonify(get_file_names(patient))
+        print(get_file_names(patient.medical_images))
+        return jsonify(get_file_names(patient.medical_images))
     return "Patient not found", 400
 
 

@@ -87,8 +87,10 @@ def test_get_ecg_string(patient_id, timestamp, expected):
 
 
 @pytest.mark.parametrize("list_in, expected",
-                         [([[400, 1], [300, 2], [500, 3]], [1, 2, 3]),
-                          ([[1, 20], [3, 50], [5, 50]], [20, 50, 50])])
+                         [([[2, 1]], [1]),
+                          ([[400, 1], [300, 2], [500, 3]], [1, 2, 3]),
+                          ([[1, 20], [3, 50], [5, 50]], [20, 50, 50]),
+                          ([[1, "hello"]], ["hello"])])
 def test_get_ecg_string(list_in, expected):
     from cloud_server import get_file_names
     answer = get_file_names(list_in)
