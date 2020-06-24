@@ -36,7 +36,8 @@ def get_image_files():
 
 def load_patient_data(patient_id):
     # This will make a request
-    return
+    r = requests.get(server_name+"/"+patient_id+"/load_recent_data")
+    return r.json()
 
 
 def load_ecg_image(patient_id, timestamp):
@@ -57,6 +58,11 @@ def design_window():
         display_past_ecg_value.configure(image=tk_image)
         display_past_ecg_value.image = tk.image
 
+    def load_recent_ecg():
+        recent_tk_image = load_image_for_display("recent_image")
+        display_ecg_value.configure(image=recent_tk_image)
+        display_ecg_value.image = tk.image
+
     def ecg_list():
         return get_past_ecg_files(patient_choice.get())
 
@@ -67,9 +73,19 @@ def design_window():
         save_ecg_image(ecg_image)
         load_ecg()
 
+    def display_recent_ecg_image(ecg_string):
+        # Edit this more
+        save_recent_ecg_image(ecg_string)
+        load_recent_ecg()
+
     def save_ecg_image(ecg_image):
         image_bytes = base64.b64decode(ecg_image)
         with open("temp_image", "wb") as out_file:
+            out_file.write(image_bytes)
+
+    def save_recent_ecg_image(ecg_image):
+        image_bytes = base64.b64decode(ecg_image)
+        with open("recent_image", "wb") as out_file:
             out_file.write(image_bytes)
 
     def display_medical_image():
@@ -77,21 +93,21 @@ def design_window():
         return
 
     def display_patient_data():
-        # patient_dict = load_patient_data(patient_choice)
-        # pat_id = patient_dict["Patient ID"]
-        # pat_name = patient_dict["Name"]
-        # pat_hr = patient_dict["Heart Rate"]
-        # pat_time = patient_dict["timestamp"]
-        # ecg_image = load_ecg_image(patient_choice, pat_time)
+        patient_data = load_patient_data(patient_choice.get())
+        print(patient_data)
+        pat_id = patient_data[0]
+        pat_name = patient_data[1]
+        pat_hr = patient_data[2]
+        pat_time = patient_data[3]
 
         past_ecg_box['values'] = ecg_list()
         # load_image_box['values'] = get_image_files()
 
-        # display_patient_id_value.configure(text=pat_id)
-        # display_patient_name_value.configure(text=pat_name)
-        # display_patient_hr_value.configure(text=pat_hr)
-        # display_timestamp_value.configure(text=pat_time)
-        # display_ecg_value.configure(command=display_image(ecg_image))
+        display_patient_id_value.configure(text=pat_id)
+        display_patient_name_value.configure(text=pat_name)
+        display_patient_hr_value.configure(text=pat_hr)
+        display_timestamp_value.configure(text=pat_time)
+        display_recent_ecg_image(patient_data[4])
 
     def cancel():
         root.destroy()

@@ -76,7 +76,7 @@ def get_latest_data(patient_id):
     hr = patient.heart_rate
     time = patient.timestamp
     ecg = patient.ecg_images
-    return [name, hr[-1], time[-1], ecg[-1]]
+    return [patient_id, name, hr[-1], time[-1], ecg[-1]]
 
 
 # Verification functions
