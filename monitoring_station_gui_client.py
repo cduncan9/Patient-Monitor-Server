@@ -10,6 +10,12 @@ import requests
 server_name = "http://127.0.0.1:5000"
 
 
+def load_image_for_display(file_name):
+    image_object = Image.open(file_name)
+    tk_image = ImageTk.PhotoImage(image_object)
+    return tk_image
+
+
 def get_available_patient_ids():
     # This will make a request
     r = requests.get(server_name + "/patient_id_list")
@@ -18,7 +24,7 @@ def get_available_patient_ids():
 
 def get_past_ecg_files(patient_id):
     # This will make a request
-    r = requests.get(server_name + "/<patient_id>/ecg_image_list")
+    r = requests.get(server_name + "/"+patient_id+"/ecg_image_list")
     return r.json()
 
 
@@ -35,7 +41,8 @@ def load_patient_data(patient_id):
 
 def load_ecg_image(patient_id, timestamp):
     # This will make a request
-    return
+    r = requests.get(server_name+"/"+patient_id+"/load_ecg_image/"+timestamp)
+    return r.text
 
 
 def load_medical_image(timestamp):
@@ -45,25 +52,28 @@ def load_medical_image(timestamp):
 
 def design_window():
 
+    def load_ecg():
+        tk_image = load_image_for_display("temp_image")
+        display_past_ecg_value.configure(image=tk_image)
+        display_past_ecg_value.image = tk.image
+
     def ecg_list():
         return get_past_ecg_files(patient_choice.get())
 
     def display_ecg_image():
         # Edit this more
-        ecg_image = load_ecg_image(patient_choice, past_ecg_file)
-        display_image(ecg_image)0
+        ecg_image = load_ecg_image(patient_choice.get(),
+                                   past_ecg_file.get())
+        save_ecg_image(ecg_image)
+        load_ecg()
+
+    def save_ecg_image(ecg_image):
+        image_bytes = base64.b64decode(ecg_image)
+        with open("temp_image", "wb") as out_file:
+            out_file.write(image_bytes)
 
     def display_medical_image():
         # Edit this more
-        medical_image = load_medical_image(load_image_file)
-        display_image(medical_image)
-
-    def display_image(base64_string):
-        image_bytes = base64.b64decode(base64_string)
-        image_buf = io.BytesIO(image_bytes)
-        i = mpimg.imread(image_buf, format='JPG')
-        plt.imshow(i, interpolation='nearest')
-        plt.show()
         return
 
     def display_patient_data():
@@ -75,6 +85,7 @@ def design_window():
         # ecg_image = load_ecg_image(patient_choice, pat_time)
 
         past_ecg_box['values'] = ecg_list()
+        # load_image_box['values'] = get_image_files()
 
         # display_patient_id_value.configure(text=pat_id)
         # display_patient_name_value.configure(text=pat_name)
@@ -156,12 +167,14 @@ def design_window():
                                  command=display_ecg_image)
     past_ecg_button.grid(column=2, row=7)
 
+    display_past_ecg_value = ttk.Label(root)
+    display_past_ecg_value.grid(column=2, row=5, sticky="E")
+
     load_image_text = ttk.Label(root, text="Load Medical Image")
     load_image_text.grid(column=0, row=8)
 
     load_image_file = tk.StringVar()
     load_image_box = ttk.Combobox(root, textvariable=load_image_file)
-    load_image_box['values'] = get_image_files()
     load_image_box.state(['readonly'])
     load_image_box.grid(column=1, row=8)
 

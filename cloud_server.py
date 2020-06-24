@@ -60,6 +60,16 @@ def retrieve_patient_id_list():
     return ret
 
 
+def get_ecg_string(patient_id, timestamp):
+    patient = NewPatient.objects.raw({"_id": patient_id}).first()
+    times = patient.timestamp
+    ecg_list = patient.ecg_images
+    for i in range(len(times)):
+        if times[i] == timestamp:
+            return ecg_list[i]
+    return ''
+
+
 # Verification functions
 def verify_patient_id(patient_id):
     if type(patient_id) == int:
@@ -67,6 +77,14 @@ def verify_patient_id(patient_id):
     if type(patient_id) == str:
         if patient_id.isdigit():
             return int(patient_id)
+    return False
+
+
+def verify_timestamp_exists(patient_id, timestamp):
+    patient = NewPatient.objects.raw({"_id": patient_id}).first()
+    times = patient.timestamp
+    if timestamp in times:
+        return True
     return False
 
 
@@ -110,10 +128,21 @@ def load_recent_patient_data(patient_id):
     return
 
 
-@app.route("/<patient_id>/load_ecg_image/<ecg_image>", methods=['GET'])
-def load_ecg_image(patient_id, ecg_image):
+@app.route("/<patient_id>/load_ecg_image/<timestamp>", methods=['GET'])
+def load_ecg_image(patient_id, timestamp):
     # Verify that the patient_id exists
-    return
+    verify_id = verify_patient_id(patient_id)
+    if verify_id is False:
+        return jsonify([])
+    check = check_patient_exists(verify_id)
+    if check is not True:
+        return jsonify([])
+    verify_timestamp = verify_timestamp_exists(verify_id,
+                                               timestamp)
+    if verify_timestamp is False:
+        return jsonify([])
+    ecg_string = get_ecg_string(verify_id, timestamp)
+    return ecg_string
 
 
 @app.route("/<patient_id>/load_medical_image/<medical_image>", methods=['GET'])
