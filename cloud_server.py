@@ -18,6 +18,13 @@ class NewPatient(MongoModel):
     medical_images = fields.ListField()
 
 
+def init_db():
+    print("Connecting to database...")
+    connect("mongodb+srv://cduncan9:BME547@cluster0.conjj.mongodb.net/"
+            "finalproject?retryWrites=true&w=majority")
+    print("Database connected.")
+
+
 def check_patient_exists(patient_id):
     try:
         db_item = NewPatient.objects.raw({"_id": patient_id}).first()
@@ -41,11 +48,26 @@ def add_patient_to_db(info):
     return patient.patient_id
 
 
-def init_db():
-    print("Connecting to database...")
-    connect("mongodb+srv://cduncan9:BME547@cluster0.conjj.mongodb.net/"
-            "finalproject?retryWrites=true&w=majority")
-    print("Database connected.")
+def retrieve_timestamps(patient_id):
+    patient = NewPatient.objects.raw({"_id": patient_id}).first()
+    return patient.timestamp
+
+
+def retrieve_patient_id_list():
+    ret = list()
+    for patient in NewPatient.objects.raw({}):
+        ret.append(patient.patient_id)
+    return ret
+
+
+# Verification functions
+def verify_patient_id(patient_id):
+    if type(patient_id) == int:
+        return patient_id
+    if type(patient_id) == str:
+        if patient_id.isdigit():
+            return int(patient_id)
+    return False
 
 
 # Route functions should be placed below this line
@@ -59,18 +81,19 @@ def add_patient():
 
 @app.route("/patient_id_list", methods=['GET'])
 def get_patient_id_list():
-    ret = list()
-    for patient in NewPatient.objects.raw({}):
-        ret.append(patient.patient_id)
-    return ret
+    return jsonify(retrieve_patient_id_list())
 
 
+# This is actually getting a list of timestamps
 @app.route("/<patient_id>/ecg_image_list", methods=['GET'])
 def get_ecg_image_list(patient_id):
-    if check_patient_exists(patient_id):
-        patient = NewPatient.objects.raw({"_id", patient_id})
-        return jsonify(patient.ecg_images)
-    return "Patient not found", 400
+    verify_id = verify_patient_id(patient_id)
+    if verify_id is False:
+        return jsonify([])
+    check = check_patient_exists(verify_id)
+    if check is not True:
+        return jsonify([])
+    return jsonify(retrieve_timestamps(verify_id))
 
 
 @app.route("/<patient_id>/medical_image_list", methods=['GET'])
