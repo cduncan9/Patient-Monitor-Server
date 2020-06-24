@@ -23,6 +23,23 @@ def test_add_new_patient(info, expected):
     assert answer == expected
 
 
+@pytest.mark.parametrize('info, expected',
+                         [([1000, "Canyon", [70], ['2020-6-23 1:34:20'],
+                            ['test string'], ['test string']], True),
+                          ([2000, "Aidan", [65], ['2020-6-21 1:35:20',
+                                                  '2020-6-22 1:35:20',
+                                                  '2020-6-23 1:35:20'],
+                            ['test string 1', 'test string 2',
+                             'test string 3'],
+                            ['test string']], True),
+                          ([4000, "Johnathan", [55], ['2020-6-23 1:24:20'],
+                            ['test string'], ['test string']], True)])
+def test_append_to_patient(info, expected):
+    from cloud_server import append_to_patient
+    answer = append_to_patient(info)
+    assert answer == expected
+
+
 @pytest.mark.parametrize('patient_id, expected',
                          [(1000, True),
                           (2000, True),
