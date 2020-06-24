@@ -83,6 +83,9 @@ def design_window():
         display_ecg_value.image = recent_tk_image
         display_ecg_value.configure(image=recent_tk_image)
 
+    def image_list():
+        return get_image_files(patient_choice.get())
+
     def ecg_list():
         return get_past_ecg_files(patient_choice.get())
 
@@ -127,7 +130,7 @@ def design_window():
         pat_time = patient_data[3]
 
         past_ecg_box['values'] = ecg_list()
-        load_image_box['values'] = get_image_files(patient_choice.get())
+        load_image_box['values'] = image_list()
 
         display_patient_id_value.configure(text=pat_id)
         display_patient_name_value.configure(text=pat_name)
