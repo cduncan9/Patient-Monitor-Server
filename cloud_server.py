@@ -71,7 +71,12 @@ def get_ecg_string(patient_id, timestamp):
 
 
 def get_latest_data(patient_id):
-    return
+    patient = NewPatient.objects.raw({"_id": patient_id}).first()
+    name = patient.patient_name
+    hr = patient.heart_rate
+    time = patient.timestamp
+    ecg = patient.ecg_images
+    return [name, hr[-1], time[-1], ecg[-1]]
 
 
 # Verification functions

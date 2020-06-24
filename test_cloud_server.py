@@ -88,9 +88,9 @@ def test_get_ecg_string(patient_id, timestamp, expected):
 
 @pytest.mark.parametrize("patient_id, expected",
                          [(1000, ["Canyon", 70, '2020-6-23 1:34:20',
-                                  'test string', 'test string']),
+                                  'test string']),
                           (2000, ["Aidan", 65, '2020-6-23 1:35:20',
-                                  'test string 3', 'test string'])])
+                                  'test string 3'])])
 def test_get_latest_data(patient_id, expected):
     from cloud_server import get_latest_data
     answer = get_latest_data(patient_id)
