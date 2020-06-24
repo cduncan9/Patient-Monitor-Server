@@ -2,7 +2,21 @@
 This is the repository for the final project for BME 547. The contributors to this repository are [Aidan Therian](https://github.com/aidan-therien) and [Canyon Duncan](https://github.com/cduncan9), and the professor for BME 547 is [Dr. David Ward](https://github.com/dward2?tab=followers). 
 ## Using This Software
 This software consists of two graphical user interfaces (GUI), one used by a patient (the patient-side client) and one used by someone who is monitoring the patient (the monitoring-station client). These two GUIs are capable of sending and receiving patient data between themselves through the use of a cloud server. 
-Both of the client GUIs can only send and receive data when the cloud server is running, so it is important to make sure that the server is running either locally or on a virtual machine (click [here](https://github.com/dward2/BME547/blob/master/Resources/virtual_machines.md) for information on setting up Duke Virtual Machines).
+Both of the client GUIs can only send and receive data when the cloud server is running, so it is important to make sure that the server is running either locally or on a virtual machine.
+
+(click [here](https://github.com/dward2/BME547/blob/master/Resources/virtual_machines.md) for information on setting up Duke Virtual Machines).
+
+#### Running The Server Locally
+Perhaps the easiest way to use either of the client GUIs is to use them whicl running on a local server.
+To do this, open up a terminal and navigate to the folder containing `cloud_server.py`.
+On the command line type `python cloud_server.py` and press `Enter` or `Return`.
+The server is now running. To run either the patient-side client or monitoring-side client using this local server, make use the server name that each module is using is called `http://127.0.0.1:5000`.
+When the modules for the client GUIs now make POST and GET requests, they will be using this local server.
+
+#### Running The Server Using A Duke Virtual Machine
+
+
+
 
 #### Using The Patient-Side Client
 To use the patient-side client from the command line, open up a terminal and navigate to the folder containing the python module `patient_gui_client.py`.
@@ -43,6 +57,7 @@ If at any time you wish to exit the monitoring-station GUI, you can click the `E
 
 ## About This Software
 The patient-side client is used to populate the database that stores patient information. The patient side client is capable of sending the patient's medical record number, name, average heart rate for an ecg sample, the time that any ECG data is sent to the server, an image of a plotted ECG dataset, medical images like Xrays or CT scans, and the filenames of the uploaded medical images.
+
  
 ## Access This Server
 
