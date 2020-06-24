@@ -36,7 +36,7 @@ To use the patient-side client from the command line, open up a terminal and nav
 Then, on the command line, type in `python python_gui_client.py` and hit `Enter` or `Return`.
 You will now see window open up on the screen of your computer that looks like:
 
-ENTER IMAGE HERE OF THE PATIENT SIDE GUIs
+![alt text](https://github.com/BME547-Summer2020/final-project-duncan-therien/blob/master/Patient_user_interface.jpg)
 
 Add more here after talking to Aidan
 
@@ -45,7 +45,7 @@ To use the monitoring-station client, open up a terminal and navigate using the 
 On the command line type `python mpnitoring_station_gui_client.py` and hit `Enter` or `Return`.
 You will now see window open up on the screen of your computer that looks like:
 
-ENTER IMAGE HERE OF THE MONITORING STATION GUI
+![alt text](https://github.com/BME547-Summer2020/final-project-duncan-therien/blob/master/Monitoring_station_GUI.jpg)
 
 This monitoring-station graphical user interface enables a user to select a patient medical record number from a drop-down menu and load recent patient data.
 Click the down arrow on the drop-down box at the top of the GUI window and select the medical record number of the patient that you are interested in monitoring.
