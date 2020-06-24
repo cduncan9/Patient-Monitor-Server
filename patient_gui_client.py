@@ -82,17 +82,18 @@ def design_window():
 
     def save_ecg_image(ecg_image):
         image_bytes = base64.b64decode(ecg_image)
-        with open("temp_image", "wb") as out_file:
+        with open(file_name.get(), "wb") as out_file:
             out_file.write(image_bytes)
 
     def load_ecg():
-        tk_image = load_image_for_display("temp_image")
+        tk_image = load_image_for_display(file_name.get())
         display_past_ecg_value.image = tk_image
         display_past_ecg_value.configure(image=tk_image)
 
     def load_ECG_trace():
         fn = file_name.get()
         hr_data = normalize_data(fn)
+        plt.clf()
         plt.plot(hr_data[:, 0], hr_data[:, 1])
         plt.xlabel("Time (s)")
         plt.ylabel("Voltage (mV)")
