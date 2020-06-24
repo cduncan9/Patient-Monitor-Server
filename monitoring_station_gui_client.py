@@ -30,9 +30,9 @@ def get_past_ecg_files(patient_id):
     return r.json()
 
 
-def get_image_files():
+def get_image_files(patient_id):
     # this will make a request
-    r = requests.get(server_name + "/<patient_id>/medical_image_list")
+    r = requests.get(server_name + "/" + patient_id + "/medical_image_list")
     return r.json()
 
 
@@ -48,9 +48,15 @@ def load_ecg_image(patient_id, timestamp):
     return r.text
 
 
-def load_medical_image(timestamp):
-    # this will make a request
-    return
+def load_medical_image(patient_id, filename):
+    r = requests.get(server_name + "/" + patient_id + "/load_medical_image/<filename>")
+    fn = r.json()
+    fh = open(filename, "wb")
+    fh.write(str.decode('base64'))
+    fh.close()
+    image_object = Image.open(filename)
+    tk_image = ImageTk.PhotoImage(image_object)
+    return tk_image
 
 
 def design_window():
@@ -120,7 +126,7 @@ def design_window():
         pat_time = patient_data[3]
 
         past_ecg_box['values'] = ecg_list()
-        # load_image_box['values'] = get_image_files()
+        load_image_box['values'] = get_image_files(patient_choice.get())
 
         display_patient_id_value.configure(text=pat_id)
         display_patient_name_value.configure(text=pat_name)
