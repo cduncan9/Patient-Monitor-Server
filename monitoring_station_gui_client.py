@@ -6,12 +6,14 @@ import base64
 import io
 import matplotlib.image as mpimg
 import requests
+from tkinter.filedialog import asksaveasfile
 
 server_name = "http://127.0.0.1:5000"
 
 
 def load_image_for_display(file_name):
     image_object = Image.open(file_name)
+    image_object = image_object.resize((350, 250), Image.ANTIALIAS)
     tk_image = ImageTk.PhotoImage(image_object)
     return tk_image
 
@@ -53,15 +55,26 @@ def load_medical_image(timestamp):
 
 def design_window():
 
+    def save_ecg_to_files(ecg_image):
+        files = [('All Files', '*.*'),
+                 ('PNG', '*.png'),
+                 ('JPEG', '*.jpg')]
+        file = asksaveasfile(filetypes=files, defaultextension=files)
+        if not file:
+            return
+        image_bytes = base64.b64decode(ecg_image)
+        with open(file, "wb") as out_file:
+            out_file.write(image_bytes)
+
     def load_ecg():
         tk_image = load_image_for_display("temp_image")
+        display_past_ecg_value.image = tk_image
         display_past_ecg_value.configure(image=tk_image)
-        display_past_ecg_value.image = tk.image
 
     def load_recent_ecg():
         recent_tk_image = load_image_for_display("recent_image")
+        display_ecg_value.image = recent_tk_image
         display_ecg_value.configure(image=recent_tk_image)
-        display_ecg_value.image = tk.image
 
     def ecg_list():
         return get_past_ecg_files(patient_choice.get())
@@ -71,6 +84,12 @@ def design_window():
         ecg_image = load_ecg_image(patient_choice.get(),
                                    past_ecg_file.get())
         save_ecg_image(ecg_image)
+        past_text = "ECG from {}".format(past_ecg_file.get())
+        display_past_ecg_text.configure(text=past_text)
+        save_past_ecg_button = ttk.Button(root, text="Save Past ECG Image",
+                                          command=lambda:
+                                          save_ecg_to_files(ecg_image))
+        save_past_ecg_button.grid(column=2, row=6)
         load_ecg()
 
     def display_recent_ecg_image(ecg_string):
@@ -157,19 +176,19 @@ def design_window():
     display_timestamp_text.grid(column=0, row=6)
 
     display_patient_id_value = ttk.Label(root)
-    display_patient_id_value.grid(column=1, row=2, sticky="E")
+    display_patient_id_value.grid(column=1, row=2)
 
     display_patient_name_value = ttk.Label(root)
-    display_patient_name_value.grid(column=1, row=3, sticky="E")
+    display_patient_name_value.grid(column=1, row=3)
 
     display_patient_hr_value = ttk.Label(root)
-    display_patient_hr_value.grid(column=1, row=4, sticky="E")
+    display_patient_hr_value.grid(column=1, row=4)
 
     display_ecg_value = ttk.Label(root)
-    display_ecg_value.grid(column=1, row=5, sticky="E")
+    display_ecg_value.grid(column=1, row=5)
 
     display_timestamp_value = ttk.Label(root)
-    display_timestamp_value.grid(column=1, row=6, sticky="E")
+    display_timestamp_value.grid(column=1, row=6)
 
     past_ecg_text = ttk.Label(root, text="Load Past ECG")
     past_ecg_text.grid(column=0, row=7)
@@ -183,8 +202,11 @@ def design_window():
                                  command=display_ecg_image)
     past_ecg_button.grid(column=2, row=7)
 
+    display_past_ecg_text = ttk.Label(root)
+    display_past_ecg_text.grid(column=2, row=4)
+
     display_past_ecg_value = ttk.Label(root)
-    display_past_ecg_value.grid(column=2, row=5, sticky="E")
+    display_past_ecg_value.grid(column=2, row=5)
 
     load_image_text = ttk.Label(root, text="Load Medical Image")
     load_image_text.grid(column=0, row=8)
