@@ -4,7 +4,6 @@ This is the repository for the final project for BME 547. The contributors to th
 This software consists of two graphical user interfaces (GUI), one used by a patient (the patient-side client) and one used by someone who is monitoring the patient (the monitoring-station client). These two GUIs are capable of sending and receiving patient data between themselves through the use of a cloud server. 
 Both of the client GUIs can only send and receive data when the cloud server is running, so it is important to make sure that the server is running either locally or on a virtual machine.
 
-(click [here](https://github.com/dward2/BME547/blob/master/Resources/virtual_machines.md) for information on setting up Duke Virtual Machines).
 
 #### Running The Server Locally
 Perhaps the easiest way to use either of the client GUIs is to use them whicl running on a local server.
@@ -14,6 +13,15 @@ The server is now running. To run either the patient-side client or monitoring-s
 When the modules for the client GUIs now make POST and GET requests, they will be using this local server.
 
 #### Running The Server Using A Duke Virtual Machine
+This section of the README discusses running the server on a Duke Virtual Machine, if you are not part of Duke, follow instructions [here](https://www.howtogeek.com/196060/beginner-geek-how-to-create-and-use-virtual-machines/) on using non-Duke virtual vachines.
+If you are a member of the Duke Community and do not yet have a virtual machine set up, click [here](https://github.com/dward2/BME547/blob/master/Resources/virtual_machines.md) for information on setting up both a Duke Virtual Machine and software to use your machine.
+As described in the link above, software like MobaXterm or PuTTY must be used to access your virtual machine.
+This README will use MobaXterm as an example software for running the server on a Duke Virtual Machine. 
+
+Make sure that your Duke Virtual Machine is on and open up MobaXterm. Log onto your virtual machine using your netid and password.
+Once you are logged onto your virtual machine, you will have to clone the GitHub repository containing the modules for this software onto the virtual machine.
+Copy the link of the repository in GitHub and type into the command line of your virtual machine `git clone <link>` where `<link>` is where you paste the copied link of the GitHub repository.
+The modules for the server, as well as both of the GUIs should now be in your virtual machine. 
 
 
 
