@@ -8,6 +8,8 @@ from ECG_analyis import normalize_data
 import matplotlib.pyplot as plt
 import requests
 from cloud_server import NewPatient
+from io import BytesIO
+from datetime import datetime
 
 # mrn_entry = 0
 # name_entry = ""
@@ -30,8 +32,18 @@ def convert_file_to_b64str(fn):
     return b64_string
 
 
-def send_patient_to_server(mrn_val, name):
-    info = [mrn_val, name, list(), list(), list(), list()]
+def convert_plot_to_b64str():
+    figfile = BytesIO()
+    plt.savefig(figfile, format='png')
+    figfile.seek(0)
+    figdata_png = base64.b64encode(figfile.read())
+    return figdata_png
+
+
+def send_patient_to_server(mrn_val, name, hr, timestamp, ecg, image):
+    im = list()
+    plot = list()
+    info = [mrn_val, name, hr, timestamp, ecg, image]
     r = requests.post(server_name+"/api/new_patient", json=info)
     print(r.text)
     if r == 200:
@@ -43,7 +55,13 @@ def send_patient_to_server(mrn_val, name):
 def design_window():
 
     def send_patient():
-        send_patient_to_server(mrn_entry.get(), name_entry.get())
+        send_patient_to_server(mrn_entry.get(),
+                               name_entry.get(),
+                               [load_ECG_trace()[0]],
+                               [datetime.strftime(datetime.now(),
+                                                  "%Y-%m-%d %H:%M:%S")],
+                               [load_ECG_trace()[1]],
+                               [convert_file_to_b64str(image_name.get())])
 
     def get_file():
         fn = filedialog.askopenfilename()
@@ -67,8 +85,14 @@ def design_window():
         plt.xlabel("Time (s)")
         plt.ylabel("Voltage (mV)")
         plt.title("ECG Trace")
-        plt.show()
-        # result = mean_bpm(fn)
+        # plt.show()
+        plot_bytes = BytesIO()
+        plt.savefig(plot_bytes, format='png')
+        plot_bytes.seek(0)
+        temp = base64.b64encode(plot_bytes.read())
+        plot_hash = str(temp, encoding='utf-8')
+        result = mean_bpm(fn)
+        return [result, plot_hash]
 
     def cancel():
         root.destroy()
