@@ -139,9 +139,9 @@ def load_ecg_image(patient_id, timestamp):
         return jsonify([])
     verify_timestamp = verify_timestamp_exists(verify_id,
                                                timestamp)
-    if verify_timestamp is not True:
+    if verify_timestamp is False:
         return jsonify([])
-    ecg_string = get_ecg_string(verify_id, verify_timestamp)
+    ecg_string = get_ecg_string(verify_id, timestamp)
     return ecg_string
 
 
