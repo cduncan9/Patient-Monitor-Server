@@ -60,6 +60,10 @@ def retrieve_patient_id_list():
     return ret
 
 
+def get_ecg_string(patient_id, timestamp):
+    return
+
+
 # Verification functions
 def verify_patient_id(patient_id):
     if type(patient_id) == int:
@@ -68,6 +72,10 @@ def verify_patient_id(patient_id):
         if patient_id.isdigit():
             return int(patient_id)
     return False
+
+
+def verify_timestamp_exists(timestamp):
+    return
 
 
 # Route functions should be placed below this line
@@ -110,10 +118,20 @@ def load_recent_patient_data(patient_id):
     return
 
 
-@app.route("/<patient_id>/load_ecg_image/<ecg_image>", methods=['GET'])
-def load_ecg_image(patient_id, ecg_image):
+@app.route("/<patient_id>/load_ecg_image/<timestamp>", methods=['GET'])
+def load_ecg_image(patient_id, timestamp):
     # Verify that the patient_id exists
-    return
+    verify_id = verify_patient_id(patient_id)
+    if verify_id is False:
+        return jsonify([])
+    check = check_patient_exists(verify_id)
+    if check is not True:
+        return jsonify([])
+    verify_timestamp = verify_timestamp_exists(timestamp)
+    if verify_timestamp is not True:
+        return jsonify([])
+    ecg_string = get_ecg_string(verify_id, verify_timestamp)
+    return ecg_string
 
 
 @app.route("/<patient_id>/load_medical_image/<medical_image>", methods=['GET'])

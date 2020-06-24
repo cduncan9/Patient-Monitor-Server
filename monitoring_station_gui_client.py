@@ -51,7 +51,7 @@ def design_window():
     def display_ecg_image():
         # Edit this more
         ecg_image = load_ecg_image(patient_choice, past_ecg_file)
-        display_image(ecg_image)0
+        display_image(ecg_image)
 
     def display_medical_image():
         # Edit this more
@@ -75,6 +75,7 @@ def design_window():
         # ecg_image = load_ecg_image(patient_choice, pat_time)
 
         past_ecg_box['values'] = ecg_list()
+        load_image_box['values'] = get_image_files()
 
         # display_patient_id_value.configure(text=pat_id)
         # display_patient_name_value.configure(text=pat_name)
@@ -161,7 +162,6 @@ def design_window():
 
     load_image_file = tk.StringVar()
     load_image_box = ttk.Combobox(root, textvariable=load_image_file)
-    load_image_box['values'] = get_image_files()
     load_image_box.state(['readonly'])
     load_image_box.grid(column=1, row=8)
 
