@@ -71,6 +71,8 @@ def design_window():
         ecg_image = load_ecg_image(patient_choice.get(),
                                    past_ecg_file.get())
         save_ecg_image(ecg_image)
+        past_text = "ECG from {}".format(past_ecg_file.get())
+        display_past_ecg_text.configure(text=past_text)
         load_ecg()
 
     def display_recent_ecg_image(ecg_string):
@@ -182,6 +184,9 @@ def design_window():
     past_ecg_button = ttk.Button(root, text="Load Data",
                                  command=display_ecg_image)
     past_ecg_button.grid(column=2, row=7)
+
+    display_past_ecg_text = ttk.Label(root)
+    display_past_ecg_text.grid(column=2, row=4)
 
     display_past_ecg_value = ttk.Label(root)
     display_past_ecg_value.grid(column=2, row=5, sticky="E")
