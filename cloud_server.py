@@ -104,6 +104,12 @@ def get_file_names(in_list):
     return temp
 
 
+def find_key(in_list, key):
+    for item in in_list:
+        if item[1] == key:
+            return item[0]
+
+
 # Route functions should be placed below this line
 @app.route("/api/new_patient", methods=['POST'])
 def add_patient():
@@ -172,12 +178,11 @@ def load_ecg_image(patient_id, timestamp):
 
 @app.route("/<patient_id>/load_medical_image/<medical_image>", methods=['GET'])
 def load_medical_image(patient_id, filename):
-    # Verify that the patient_id exists
-    if check_patient_exists(id):
-        patient = patient = NewPatient.objects.raw({"_id": patient_id})
-        for image in patient.medical_images:
-            if image[1] == filename:
-                return image[0]
+    patient_id = int(patient_id)
+    if check_patient_exists(patient_id):
+        patient = NewPatient.objects.raw({"_id": patient_id})
+        print(find_key(patient.medical_images, filename))
+        return jsonify(find_key(patient.medical_images, filename))
     return "Image not found", 400
 
 

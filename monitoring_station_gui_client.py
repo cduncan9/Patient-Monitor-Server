@@ -51,13 +51,7 @@ def load_ecg_image(patient_id, timestamp):
 def load_medical_image(patient_id, filename):
     r = requests.get(server_name + "/" + patient_id +
                      "/load_medical_image/" + filename)
-    fn = r.json()
-    fh = open(filename, "wb")
-    fh.write(str.decode('base64'))
-    fh.close()
-    image_object = Image.open(filename)
-    tk_image = ImageTk.PhotoImage(image_object)
-    return tk_image
+    return r.text
 
 
 def design_window():
@@ -72,6 +66,11 @@ def design_window():
         image_bytes = base64.b64decode(ecg_image)
         with open(file, "wb") as out_file:
             out_file.write(image_bytes)
+
+    def load_medical():
+        tk_image = load_image_for_display("med_image")
+        display_past_ecg_value.image = tk_image
+        display_past_ecg_value.configure(image=tk_image)
 
     def load_ecg():
         tk_image = load_image_for_display("temp_image")
@@ -107,6 +106,11 @@ def design_window():
         save_recent_ecg_image(ecg_string)
         load_recent_ecg()
 
+    def save_medical_image(medical_image):
+        image_bytes = base64.b64decode(medical_image)
+        with open("med_image", "wb") as out_file:
+            out_file.write(image_bytes)
+
     def save_ecg_image(ecg_image):
         image_bytes = base64.b64decode(ecg_image)
         with open("temp_image", "wb") as out_file:
@@ -119,7 +123,14 @@ def design_window():
 
     def display_medical_image():
         # Edit this more
-        return
+        print(patient_choice.get())
+        print(load_image_file.get())
+        medical_image = load_medical_image(patient_choice.get(),
+                                           load_image_file.get())
+        print(medical_image)
+        save_medical_image(medical_image)
+        text = "Image from {}".format(load_image_file.get())
+        load_medical()
 
     def display_patient_data():
         patient_data = load_patient_data(patient_choice.get())
