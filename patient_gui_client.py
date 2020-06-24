@@ -9,10 +9,10 @@ import matplotlib.pyplot as plt
 import requests
 from cloud_server import NewPatient
 
-mrn_entry = 0
-name_entry = ""
-image_name = ""
-file_name = ""
+# mrn_entry = 0
+# name_entry = ""
+# image_name = ""
+# file_name = ""
 
 server_name = "http://127.0.0.1:5000"
 
@@ -30,8 +30,8 @@ def convert_file_to_b64str(fn):
     return b64_string
 
 
-def send_patient_to_server():
-    info = [mrn_entry, name_entry, list(), list(), list(), list()]
+def send_patient_to_server(mrn_val, name):
+    info = [mrn_val, name, list(), list(), list(), list()]
     r = requests.post(server_name+"/api/new_patient", json=info)
     print(r.text)
     if r == 200:
@@ -41,6 +41,9 @@ def send_patient_to_server():
 
 
 def design_window():
+
+    def send_patient():
+        send_patient_to_server(mrn_entry.get(), name_entry.get())
 
     def get_file():
         fn = filedialog.askopenfilename()
@@ -116,7 +119,7 @@ def design_window():
     file_ok_button.grid(column=1, row=5)
 
     upload_data_button = ttk.Button(root, width=20, text="upload to database",
-                                    command=send_patient_to_server)
+                                    command=send_patient)
     upload_data_button.grid()
 
     root.mainloop()
