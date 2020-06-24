@@ -75,8 +75,10 @@ def get_ecg_image_list(patient_id):
 
 @app.route("/<patient_id>/medical_image_list", methods=['GET'])
 def get_medical_image_list(patient_id):
-    # Verify that the patient_id exists
-    return
+    if check_patient_exists(patient_id):
+        patient = NewPatient.objects.raw({"_id", patient_id})
+        return jsonify(patient.medical_images)
+    return "Patient not found", 400
 
 
 @app.route("/<patient_id>/load_recent_data", methods=['GET'])

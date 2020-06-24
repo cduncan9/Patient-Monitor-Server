@@ -18,12 +18,13 @@ def get_available_patient_ids():
 
 def get_past_ecg_files():
     # This will make a request
-    return
+    r=requests.get(server_name + "/<patient_id>/ecg_image_list")
+    return r.json()
 
 
 def get_image_files():
     # this will make a request
-    r=requests.get(server_name + "/<patient_id>/ecg_image_list")
+    r = requests.get(server_name + "/<patient_id>/medical_image_list")
     return r.json()
 
 
