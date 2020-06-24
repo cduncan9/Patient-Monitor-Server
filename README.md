@@ -21,7 +21,12 @@ This README will use MobaXterm as an example software for running the server on 
 Make sure that your Duke Virtual Machine is on and open up MobaXterm. Log onto your virtual machine using your netid and password.
 Once you are logged onto your virtual machine, you will have to clone the GitHub repository containing the modules for this software onto the virtual machine.
 Copy the link of the repository in GitHub and type into the command line of your virtual machine `git clone <link>` where `<link>` is where you paste the copied link of the GitHub repository.
-The modules for the server, as well as both of the GUIs should now be in your virtual machine. 
+The modules for the server, as well as both of the GUIs should now be in your virtual machine.
+
+Create a virtual environment by typing into the command line `python -m venv venv` and activate it by typing `source venv/bin/activate`.
+To run the server on the virtual machine you must install any necessary python modules into your virtual environment. To do so, type into the command line `pip install -r requirements.txt`. Now create a new branch by typing `git branch <branch_name>` and switch to that branch by typing `git checkout <branch_name`. Once you are in this new branch, open your server code by typing `nano cloud_server.py` and scroll down to the bottom of the module where your see the command `app.run()`. Inside of the parentheses, insert the line `host="0.0.0.0"`. You can now save and exit the module.
+
+Now, if you type into the command line `python cloud_server.py`, your server will run on the Duke Virtual Machine, and can be accessed from anywhere by using the server address (see the section in this README on accessing a server already running this code).
 
 
 
