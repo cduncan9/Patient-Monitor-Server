@@ -73,6 +73,8 @@ def design_window():
         save_ecg_image(ecg_image)
         past_text = "ECG from {}".format(past_ecg_file.get())
         display_past_ecg_text.configure(text=past_text)
+        save_past_ecg_button = ttk.Button(root, text="Save Past ECG Image")
+        save_past_ecg_button.grid(column=2, row=6)
         load_ecg()
 
     def display_recent_ecg_image(ecg_string):
