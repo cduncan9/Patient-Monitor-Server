@@ -18,6 +18,13 @@ class NewPatient(MongoModel):
     medical_images = fields.ListField()
 
 
+def init_db():
+    print("Connecting to database...")
+    connect("mongodb+srv://cduncan9:BME547@cluster0.conjj.mongodb.net/"
+            "finalproject?retryWrites=true&w=majority")
+    print("Database connected.")
+
+
 def check_patient_exists(patient_id):
     try:
         db_item = NewPatient.objects.raw({"_id": patient_id}).first()
@@ -39,13 +46,6 @@ def add_patient_to_db(info):
         patient.medical_images = info[5]
     patient.save()
     return patient.patient_id
-
-
-def init_db():
-    print("Connecting to database...")
-    connect("mongodb+srv://cduncan9:BME547@cluster0.conjj.mongodb.net/"
-            "finalproject?retryWrites=true&w=majority")
-    print("Database connected.")
 
 
 # Verification functions
@@ -84,6 +84,7 @@ def get_ecg_image_list(patient_id):
     check = check_patient_exists(patient_id)
     if check is not True:
         return "Patient {} is not in the database".format(patient_id)
+    ecg_list = retrieve_ecg_list(patient_id)
     return
 
 
