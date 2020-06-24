@@ -32,6 +32,16 @@ def test_check_patient_exists(patient_id, expected):
     assert answer == expected
 
 
+@pytest.mark.parametrize('data, expected',
+                         [([[100, 1], [200, 2],
+                            [300, 3]], [1, 2, 3]),
+                          ([[567, 3], [436, 8], [869, 10]], [3, 8, 10])])
+def test_get_file_names(data, expected):
+    from cloud_server import get_file_names
+    answer = get_file_names(input)
+    assert answer == expected
+
+
 @pytest.mark.parametrize('expected',
                          [[1000, 2000, 4000]])
 def test_get_patient_list(expected):
