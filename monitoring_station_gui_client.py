@@ -112,6 +112,7 @@ def design_window():
         return
 
     def display_patient_data():
+        reset()
         patient_data = load_patient_data(patient_choice.get())
         print(patient_data)
         pat_id = patient_data[0]
