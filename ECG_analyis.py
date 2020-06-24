@@ -37,7 +37,7 @@ def normalize_data(file_name):
     data = read_data(file_name)
     tt = data[:, 0]
     temp = data[:, 1]
-    yy = temp / max(temp)
+    yy = temp
     res = fit_sin(tt, yy)
     # plt.plot(tt, yy, "k-", label="raw data", linewidth=1)
     # plt.plot(tt, res["fitfunc"](tt), "r-", label="fit curve", linewidth=2)

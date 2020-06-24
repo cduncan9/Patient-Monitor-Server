@@ -80,6 +80,16 @@ def design_window():
         image_label.image = tk.image
         result_label.grid_remove()
 
+    def save_ecg_image(ecg_image):
+        image_bytes = base64.b64decode(ecg_image)
+        with open("temp_image", "wb") as out_file:
+            out_file.write(image_bytes)
+
+    def load_ecg():
+        tk_image = load_image_for_display("temp_image")
+        display_past_ecg_value.image = tk_image
+        display_past_ecg_value.configure(image=tk_image)
+
     def load_ECG_trace():
         fn = file_name.get()
         hr_data = normalize_data(fn)
@@ -87,14 +97,14 @@ def design_window():
         plt.xlabel("Time (s)")
         plt.ylabel("Voltage (mV)")
         plt.title("ECG Trace")
-        # plt.show()
         plot_bytes = BytesIO()
         plt.savefig(plot_bytes, format='png')
         plot_bytes.seek(0)
         temp = base64.b64encode(plot_bytes.read())
         plot_hash = str(temp, encoding='utf-8')
         result = mean_bpm(fn)
-        return [result, plot_hash]
+        save_ecg_image(plot_hash)
+        load_ecg()
 
     def cancel():
         root.destroy()
@@ -133,6 +143,9 @@ def design_window():
 
     result_label = ttk.Label(root)
     result_label.grid(column=4, row=1)
+
+    display_past_ecg_value = ttk.Label(root)
+    display_past_ecg_value.grid(column=0, row=7)
 
     file_name = tk.StringVar()
     file_name_box = ttk.Entry(root, width=50, textvariable=file_name)
