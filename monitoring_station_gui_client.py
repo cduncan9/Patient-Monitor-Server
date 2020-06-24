@@ -150,6 +150,8 @@ def design_window():
         display_past_ecg_value.grid_remove()
         display_past_ecg_value = ttk.Label(root)
         display_past_ecg_value.grid(column=2, row=5)
+        past_ecg_box['values'] = ""
+        past_ecg_file.set("")
 
 
 
