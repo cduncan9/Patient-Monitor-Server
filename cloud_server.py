@@ -75,7 +75,11 @@ def verify_patient_id(patient_id):
 
 
 def verify_timestamp_exists(patient_id, timestamp):
-    return
+    patient = NewPatient.objects.raw({"_id": patient_id}).first()
+    times = patient.timestamp
+    if timestamp in times:
+        return True
+    return False
 
 
 # Route functions should be placed below this line
