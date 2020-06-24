@@ -142,6 +142,10 @@ def design_window():
         display_patient_name_value.configure(text="")
         display_patient_hr_value.configure(text="")
         display_timestamp_value.configure(text="")
+        display_ecg_value.grid_remove()
+        display_ecg_value = ttk.Label(root)
+        display_ecg_value.grid(column=1, row=5)
+
 
     root = tk.Tk()
     root.title("Monitoring Station User Interface")
