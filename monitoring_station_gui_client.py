@@ -137,14 +137,20 @@ def design_window():
         nonlocal display_patient_hr_value
         nonlocal display_timestamp_value
         nonlocal display_ecg_value
+        nonlocal display_past_ecg_value
 
         display_patient_id_value.configure(text="")
         display_patient_name_value.configure(text="")
         display_patient_hr_value.configure(text="")
         display_timestamp_value.configure(text="")
+        display_past_ecg_text.configure(text="")
         display_ecg_value.grid_remove()
         display_ecg_value = ttk.Label(root)
         display_ecg_value.grid(column=1, row=5)
+        display_past_ecg_value.grid_remove()
+        display_past_ecg_value = ttk.Label(root)
+        display_past_ecg_value.grid(column=2, row=5)
+
 
 
     root = tk.Tk()
