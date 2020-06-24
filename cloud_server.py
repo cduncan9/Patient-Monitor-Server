@@ -74,7 +74,7 @@ def verify_patient_id(patient_id):
     return False
 
 
-def verify_timestamp_exists(timestamp):
+def verify_timestamp_exists(patient_id, timestamp):
     return
 
 
@@ -127,7 +127,8 @@ def load_ecg_image(patient_id, timestamp):
     check = check_patient_exists(verify_id)
     if check is not True:
         return jsonify([])
-    verify_timestamp = verify_timestamp_exists(timestamp)
+    verify_timestamp = verify_timestamp_exists(verify_id,
+                                               timestamp)
     if verify_timestamp is not True:
         return jsonify([])
     ecg_string = get_ecg_string(verify_id, verify_timestamp)

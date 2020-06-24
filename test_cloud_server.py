@@ -60,3 +60,14 @@ def test_retrieve_timestamps(patient_id, expected):
     from cloud_server import retrieve_timestamps
     answer = retrieve_timestamps(patient_id)
     assert answer == expected
+
+
+@pytest.mark.parametrize("patient_id, time, expected",
+                         [(2000, '2020-6-22 1:35:20',
+                           True),
+                          (1000, '2020-6-27 1:35:20',
+                           False)])
+def test_verify_timestamp_exists(patient_id, time, expected):
+    from cloud_server import verify_timestamp_exists
+    answer = verify_timestamp_exists(patient_id, time)
+    assert answer == expected
