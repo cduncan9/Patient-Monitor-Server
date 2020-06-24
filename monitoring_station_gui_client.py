@@ -9,6 +9,11 @@ import requests
 
 server_name = "http://127.0.0.1:5000"
 
+def load_image_for_display(file_name):
+    image_object = Image.open(file_name)
+    tk_image = ImageTk.PhotoImage(image_object)
+    return tk_image
+
 
 def get_available_patient_ids():
     # This will make a request
@@ -53,7 +58,12 @@ def design_window():
         # Edit this more
         ecg_image = load_ecg_image(patient_choice.get(),
                                    past_ecg_file.get())
-        display_image(ecg_image)
+        save_ecg_image(ecg_image)
+
+    def save_ecg_image(ecg_image):
+        image_bytes = base64.b64decode(ecg_image)
+        with open("temp_image", "wb") as out_file:
+            out_file.write(image_bytes)
 
     def display_medical_image():
         # Edit this more
@@ -158,6 +168,9 @@ def design_window():
     past_ecg_button = ttk.Button(root, text="Load Data",
                                  command=display_ecg_image)
     past_ecg_button.grid(column=2, row=7)
+
+    display_past_ecg_value = ttk.Label(root)
+    display_past_ecg_value.grid(column=2, row=5, sticky="E")
 
     load_image_text = ttk.Label(root, text="Load Medical Image")
     load_image_text.grid(column=0, row=8)
