@@ -53,13 +53,16 @@ def send_patient_to_server(mrn_val, name, hr, timestamp, ecg, image):
 def design_window():
 
     def send_patient():
+        fn = image_name.get().split("/")
+        name = fn[-1]
         send_patient_to_server(mrn_entry.get(),
                                name_entry.get(),
                                [load_ECG_trace()[0]],
                                [datetime.strftime(datetime.now(),
                                                   "%Y-%m-%d %H:%M:%S")],
                                [load_ECG_trace()[1]],
-                               [convert_file_to_b64str(image_name.get())])
+                               [[convert_file_to_b64str(image_name.get()),
+                                name]])
 
     def get_file():
         fn = filedialog.askopenfilename()

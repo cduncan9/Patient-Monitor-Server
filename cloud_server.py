@@ -97,6 +97,19 @@ def verify_timestamp_exists(patient_id, timestamp):
     return False
 
 
+def get_file_names(in_list):
+    temp = list()
+    for item in in_list:
+        temp.append(item[1])
+    return temp
+
+
+def find_key(in_list, key):
+    for item in in_list:
+        if item[1] == key:
+            return item[0]
+
+
 # Route functions should be placed below this line
 @app.route("/api/new_patient", methods=['POST'])
 def add_patient():
@@ -125,9 +138,11 @@ def get_ecg_image_list(patient_id):
 
 @app.route("/<patient_id>/medical_image_list", methods=['GET'])
 def get_medical_image_list(patient_id):
+    patient_id = int(patient_id)
     if check_patient_exists(patient_id):
-        patient = NewPatient.objects.raw({"_id", patient_id})
-        return jsonify(patient.medical_images)
+        patient = NewPatient.objects.raw({"_id": patient_id}).first()
+        print(get_file_names(patient.medical_images))
+        return jsonify(get_file_names(patient.medical_images))
     return "Patient not found", 400
 
 
@@ -163,8 +178,12 @@ def load_ecg_image(patient_id, timestamp):
 
 @app.route("/<patient_id>/load_medical_image/<medical_image>", methods=['GET'])
 def load_medical_image(patient_id, medical_image):
-    # Verify that the patient_id exists
-    return
+    patient_id = int(patient_id)
+    if check_patient_exists(patient_id):
+        patient = NewPatient.objects.raw({"_id": patient_id}).first()
+        print(find_key(patient.medical_images, medical_image))
+        return jsonify(find_key(patient.medical_images, medical_image))
+    return "Image not found", 400
 
 
 if __name__ == '__main__':

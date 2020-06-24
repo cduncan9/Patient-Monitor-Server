@@ -30,9 +30,9 @@ def get_past_ecg_files(patient_id):
     return r.json()
 
 
-def get_image_files():
+def get_image_files(patient_id):
     # this will make a request
-    r = requests.get(server_name + "/<patient_id>/medical_image_list")
+    r = requests.get(server_name + "/" + patient_id + "/medical_image_list")
     return r.json()
 
 
@@ -48,9 +48,10 @@ def load_ecg_image(patient_id, timestamp):
     return r.text
 
 
-def load_medical_image(timestamp):
-    # this will make a request
-    return
+def load_medical_image(patient_id, filename):
+    r = requests.get(server_name + "/" + patient_id +
+                     "/load_medical_image/" + filename)
+    return r.text
 
 
 def design_window():
@@ -66,6 +67,22 @@ def design_window():
         with open(file, "wb") as out_file:
             out_file.write(image_bytes)
 
+    def save_medical_to_files(medical_image):
+        files = [('All Files', '*.*'),
+                 ('PNG', '*.png'),
+                 ('JPEG', '*.jpg')]
+        file = asksaveasfile(filetypes=files, defaultextension=files)
+        if not file:
+            return
+        image_bytes = base64.b64decode(medical_image)
+        with open(file, "wb") as out_file:
+            out_file.write(image_bytes)
+
+    def load_medical():
+        tk_image = load_image_for_display("med_image")
+        display_past_ecg_value.image = tk_image
+        display_past_ecg_value.configure(image=tk_image)
+
     def load_ecg():
         tk_image = load_image_for_display("temp_image")
         display_past_ecg_value.image = tk_image
@@ -75,6 +92,9 @@ def design_window():
         recent_tk_image = load_image_for_display("recent_image")
         display_ecg_value.image = recent_tk_image
         display_ecg_value.configure(image=recent_tk_image)
+
+    def image_list():
+        return get_image_files(patient_choice.get())
 
     def ecg_list():
         return get_past_ecg_files(patient_choice.get())
@@ -97,6 +117,11 @@ def design_window():
         save_recent_ecg_image(ecg_string)
         load_recent_ecg()
 
+    def save_medical_image(medical_image):
+        image_bytes = base64.b64decode(medical_image)
+        with open("med_image", "wb") as out_file:
+            out_file.write(image_bytes)
+
     def save_ecg_image(ecg_image):
         image_bytes = base64.b64decode(ecg_image)
         with open("temp_image", "wb") as out_file:
@@ -109,7 +134,19 @@ def design_window():
 
     def display_medical_image():
         # Edit this more
-        return
+        print(patient_choice.get())
+        print(load_image_file.get())
+        medical_image = load_medical_image(patient_choice.get(),
+                                           load_image_file.get())
+        print(medical_image)
+        save_medical_image(medical_image)
+        text = "Image from {}".format(load_image_file.get())
+        display_past_ecg_text.configure(text=text)
+        save_image_button = ttk.Button(root, text="Save Medical Image",
+                                       command=lambda:
+                                       save_medical_to_files(medical_image))
+        save_image_button.grid(column=2, row=6)
+        load_medical()
 
     def new_patient():
         reset()
@@ -124,7 +161,7 @@ def design_window():
         pat_time = patient_data[3]
 
         past_ecg_box['values'] = ecg_list()
-        # load_image_box['values'] = get_image_files()
+        load_image_box['values'] = image_list()
 
         display_patient_id_value.configure(text=pat_id)
         display_patient_name_value.configure(text=pat_name)

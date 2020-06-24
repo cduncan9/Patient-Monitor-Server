@@ -86,6 +86,28 @@ def test_get_ecg_string(patient_id, timestamp, expected):
     assert answer == expected
 
 
+@pytest.mark.parametrize("list_in, expected",
+                         [([[2, 1]], [1]),
+                          ([[400, 1], [300, 2], [500, 3]], [1, 2, 3]),
+                          ([[1, 20], [3, 50], [5, 50]], [20, 50, 50]),
+                          ([[1, "hello"]], ["hello"])])
+def test_get_ecg_string(list_in, expected):
+    from cloud_server import get_file_names
+    answer = get_file_names(list_in)
+    assert answer == expected
+
+
+@pytest.mark.parametrize("list_in, key, expected",
+                         [([[2, 1]], 1, 2),
+                          ([[400, 1], [300, 2], [500, 3]], 2, 300),
+                          ([[1, 20], [3, 50], [5, 50]], 20, 1),
+                          ([[1, "hello"]], "hello", 1)])
+def test_get_ecg_string(list_in, key, expected):
+    from cloud_server import find_key
+    answer = find_key(list_in, key)
+    assert answer == expected
+
+
 @pytest.mark.parametrize("patient_id, expected",
                          [(1000, [1000, "Canyon", 70, '2020-6-23 1:34:20',
                                   'test string']),
