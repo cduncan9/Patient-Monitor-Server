@@ -21,7 +21,7 @@ server_name = "http://127.0.0.1:5000"
 
 def load_image_for_display(file_name):
     image_object = Image.open(file_name)
-    image_object = image_object.resize((350, 250), Image.ANTIALIAS)
+    image_object = image_object.resize((300, 300), Image.ANTIALIAS)
     tk_image = ImageTk.PhotoImage(image_object)
     return tk_image
 
