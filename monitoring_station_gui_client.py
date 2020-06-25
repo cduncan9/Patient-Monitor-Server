@@ -127,8 +127,32 @@ def load_medical_image(patient_id, filename):
 
 
 def design_window():
+    """
+    This is the main function that controls the GUI
+
+    This function contains all of the code important in the GUI display
+    and the feedback given to the user. This function includes several
+    sub-functions which are responsible for the the loading, converting,
+    and saving of data. This GUI is capable of sending and receiving input,
+    and this GUI can display ECG and medical images. This GUI uses a grid
+    structure for organization.
+    :return:
+    """
 
     def save_ecg_to_files(ecg_image):
+        """
+        This function saves an ECG image to a local computer
+
+        This function receives a base64 string as input which encodes
+        an image of an ECG dataset. First, this function uses the
+        asksaveasfile() command to let the user open up a file dialog box
+        and select a file location and name that they desire. Then this
+        function decodes the base64 string into an image format suitable
+        for storage as an image file. Lastly this function opens the file
+        specified earlier, and writes out the image data into the file.
+        :param ecg_image: a base64 string encoding an image
+        :return:
+        """
         files = [('All Files', '*.*'),
                  ('PNG', '*.png'),
                  ('JPEG', '*.jpg')]
@@ -140,6 +164,19 @@ def design_window():
             out_file.write(image_bytes)
 
     def save_medical_to_files(medical_image):
+        """
+        This function saves a medical image to a local computer
+
+        This function receives a base64 string as input which encodes
+        a medical image. First, this function uses the
+        asksaveasfile() command to let the user open up a file dialog box
+        and select a file location and name that they desire. Then this
+        function decodes the base64 string into an image format suitable
+        for storage as an image file. Lastly this function opens the file
+        specified earlier, and writes out the image data into the file.
+        :param medical_image: a base64 string encoding an image
+        :return:
+                """
         files = [('All Files', '*.*'),
                  ('PNG', '*.png'),
                  ('JPEG', '*.jpg')]
@@ -151,27 +188,110 @@ def design_window():
             out_file.write(image_bytes)
 
     def load_medical():
+        """
+        This function stores the tk image object as an image
+        variable of the Label widget
+
+        Sometimes when assigning images to Labels in tkinter
+        you run into the problem of the python memory manager
+        erasing images that are not directly stored to anything.
+        To get around this, this function gets the tk image
+        object from the function load_image_for_display() and
+        it assigns the .image component of the
+        display_past_ecg_value to be the tk image object.
+        This function then configures the Label to have the
+        tk image object as a parameter linked to the label, so
+        that the python memory manager does not get rid of it.
+        :return:
+        """
         tk_image = load_image_for_display("med_image")
         display_past_ecg_value.image = tk_image
         display_past_ecg_value.configure(image=tk_image)
 
     def load_ecg():
+        """
+        This function stores the tk image object as an image
+        variable of the Label widget
+
+        Sometimes when assigning images to Labels in tkinter
+        you run into the problem of the python memory manager
+        erasing images that are not directly stored to anything.
+        To get around this, this function gets the tk image
+        object from the function load_image_for_display() and
+        it assigns the .image component of the
+        display_past_ecg_value to be the tk image object.
+        This function then configures the Label to have the
+        tk image object as a parameter linked to the label, so
+        that the python memory manager does not get rid of it.
+        :return:
+        """
         tk_image = load_image_for_display("temp_image")
         display_past_ecg_value.image = tk_image
         display_past_ecg_value.configure(image=tk_image)
 
     def load_recent_ecg():
+        """
+        This function stores the tk image object as an image
+        variable of the Label widget
+
+        Sometimes when assigning images to Labels in tkinter
+        you run into the problem of the python memory manager
+        erasing images that are not directly stored to anything.
+        To get around this, this function gets the tk image
+        object from the function load_image_for_display() and
+        it assigns the .image component of the
+        display_ecg_value to be the tk image object.
+        This function then configures the Label to have the
+        tk image object as a parameter linked to the label, so
+        that the python memory manager does not get rid of it.
+        :return:
+        """
         recent_tk_image = load_image_for_display("recent_image")
         display_ecg_value.image = recent_tk_image
         display_ecg_value.configure(image=recent_tk_image)
 
     def image_list():
+        """
+        This function calls get_image_files() and sends it
+        the patient_choice which is the chosen patient id.
+
+        get_image_files() is the function that returns a list
+        of medical image filenames, so this function is essentially a middle
+        step in sending the patient id to the GET request function
+        so that a list of medical image filenames can populate
+        the medical image combobox
+        :return: a list of medical image files for a patient id
+        """
         return get_image_files(patient_choice.get())
 
     def ecg_list():
+        """
+        This function returns a list of ECG times for a patient
+
+        This function is called to populate the ComboBox of ECG
+        times. This function sends the patient id to the function
+        get_past_ecg_files() which then returns a list of times
+        that correspond to ECG scans.
+        :return: a list of times that correspond to ECG scans
+        """
         return get_past_ecg_files(patient_choice.get())
 
     def display_ecg_image():
+        """
+        This function retrieves a base64 string for an ECG image
+        and sends it to be displayed in the GUI
+
+        This is the main function that calls other functions in order to
+        produce an ECG image in the GUI. First, this function sends the
+        patient id and the desired time to the function load_ecg_image(),
+        which returns a base 64 string encoding the desired ECG image. Then
+        this function calls the save_ecg_image() function which saves the ECG
+        image in a file so that the load_ecg() function can display the image
+        from the file. This function also creates a Label that makes the time
+        of the ECG image displayed on the GUI and it displays the button that
+        is used to save the ecg image.
+        :return:
+        """
         # Edit this more
         ecg_image = load_ecg_image(patient_choice.get(),
                                    past_ecg_file.get())
@@ -185,26 +305,84 @@ def design_window():
         load_ecg()
 
     def display_recent_ecg_image(ecg_string):
+        """
+        This function calls other functions together to produce an ecg image
+
+        This function receives a base64 string as input that encodes a desired
+        ecg image. This function then calls save_recent_ecg_image() which
+        saves the base64 string to a file so that it can be loaded by the
+        function load_recent_ecg()
+        :param ecg_string: a base64 string containing a desired ECG image
+        :return:
+        """
         # Edit this more
         save_recent_ecg_image(ecg_string)
         load_recent_ecg()
 
     def save_medical_image(medical_image):
+        """
+        This function saves base64 string of a medical image to
+        a temporary file
+
+        This function receives a base64 string containing an encoded
+        medical image and decodes that image into a format suitable for
+        image files. This is then saved into a temporary file called
+        med_image using a with command.
+        :param medical_image: a base64 string containing a medical image
+        :return:
+        """
         image_bytes = base64.b64decode(medical_image)
         with open("med_image", "wb") as out_file:
             out_file.write(image_bytes)
 
     def save_ecg_image(ecg_image):
+        """
+        This function saves base64 string of an ecg image to
+        a temporary file
+
+        This function receives a base64 string containing an encoded
+        ecg image and decodes that image into a format suitable for
+        image files. This is then saved into a temporary file called
+        temp_image using a with command.
+        :param ecg_image: a base64 string containing an ecg image
+        :return:
+        """
         image_bytes = base64.b64decode(ecg_image)
         with open("temp_image", "wb") as out_file:
             out_file.write(image_bytes)
 
     def save_recent_ecg_image(ecg_image):
+        """
+        This function saves base64 string of an ecg image to
+        a temporary file
+
+        This function receives a base64 string containing an encoded
+        ecg image and decodes that image into a format suitable for
+        image files. This is then saved into a temporary file called
+        recent_image using a with command.
+        :param ecg_image: a base64 string containing an ecg image
+        :return:
+        """
         image_bytes = base64.b64decode(ecg_image)
         with open("recent_image", "wb") as out_file:
             out_file.write(image_bytes)
 
     def display_medical_image():
+        """
+        This function retrieves a base64 string for a medical image
+        and sends it to be displayed in the GUI
+
+        This is the main function that calls other functions in order to
+        produce a medical image in the GUI. First, this function sends the
+        patient id and a filename to the function load_medical_image(),
+        which returns a base64 string encoding the medical image. Then
+        this function calls the save_medical_image() function which saves the
+        image in a file so that the load_medical() function can display the
+        image from the file. This function also creates a Label that makes
+        the filename of the image displayed on the GUI and it displays the
+        button that is used to save the image.
+        :return:
+        """
         # Edit this more
         print(patient_choice.get())
         print(load_image_file.get())
@@ -221,10 +399,36 @@ def design_window():
         load_medical()
 
     def new_patient():
+        """
+        This function resets the GUI and calls to display a patient's data
+
+        This function is called whenever a new patient id is selected and
+        loaded on the GUI. This function first calls the reset() function
+        which clears the GUI, then is calls the function display_patient_data
+        which gets the most recent name, heart rate, timestamp, and ecg
+        image for a patient id.
+        :return:
+        """
         reset()
         display_patient_data()
 
     def display_patient_data():
+        """
+        This function is responsible for displaying the most recent patient
+        data for a specific patient id.
+
+        This function first calls the function load_patient_data() and sends
+        it the id of the patient that was chosen. load_patient_data() returns
+        that patient's id, name, most recent heart rate, most recent ecg
+        image,and the time of the most recent
+        upload. Then all of these returned
+        parameters are assigned to their corresponding Label in the GUI. Then
+        the comboboxes for the ecg images and the medical images are populated
+        by calling the functions ecg_list() and image_list() respectively.
+        finally the command root.after() is used so that this function is
+        called again every 20 seconds, updating the most recent patient data.
+        :return:
+        """
         patient_data = load_patient_data(patient_choice.get())
         print(patient_data)
         pat_id = patient_data[0]
@@ -243,9 +447,24 @@ def design_window():
         root.after(20000, display_patient_data)
 
     def cancel():
+        """
+        This function closes the main window
+        :return:
+        """
         root.destroy()
 
     def reset():
+        """
+        This function is responsible for clearing the GUI
+
+        This function first assigns some Labels which were declared outside
+        of it's scope as nonlocal. Then, for all of the Labels that display
+        text, this function changes their text to be empty strings. After
+        that, this function removes the images from the grid and then
+        re-assigns them to the grid, so that the Labels can be used again
+        in the future.
+        :return:
+        """
         nonlocal display_patient_id_value
         nonlocal display_patient_name_value
         nonlocal display_patient_hr_value
