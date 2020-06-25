@@ -12,6 +12,19 @@ server_name = "http://127.0.0.1:5000"
 
 
 def load_image_for_display(file_name):
+    """
+    This function converts image files to be displayed using tkinter
+
+    To load an image onto a tkinter window, you have to ensure that
+    it is in the proper format for tkinter to use it. This function
+    uses the Pillow package to prepare an image for use. First the image
+    is loaded from a filename into a PIL image object. Then, as the images
+    are generally very large, the images are resized to be 350X250. Then
+    The PIL image objects are converted into a Tk image object, and this
+    object is returned.
+    :param file_name: The file storing the desired image
+    :return: Tk image object for use in a Tk interface
+    """
     image_object = Image.open(file_name)
     image_object = image_object.resize((350, 250), Image.ANTIALIAS)
     tk_image = ImageTk.PhotoImage(image_object)
@@ -19,36 +32,95 @@ def load_image_for_display(file_name):
 
 
 def get_available_patient_ids():
+    """
+    This function makes a GET request and returns a list of patient ids
+
+    This function makes a GET request to the cloud server that stores
+    patient data. This GET request will return a list of patient ids
+    that are present in the database. This list is returned.
+    :return: a list of patient ids in the database
+    """
     # This will make a request
     r = requests.get(server_name + "/patient_id_list")
     return r.json()
 
 
 def get_past_ecg_files(patient_id):
+    """
+    This function returns a list of ECG timestamps for a patient
+
+    This function receives a patient id as input and includes that
+    in the server name when it makes a GET request. The GET
+    request is for a list of ECG times for that specific patient.
+    This list of times is returned.
+    :param patient_id: The id number of the patient of interest
+    :return: a list of times that ECG data sets were uploaded
+    """
     # This will make a request
     r = requests.get(server_name + "/"+patient_id+"/ecg_image_list")
     return r.json()
 
 
 def get_image_files(patient_id):
+    """
+    This function returns the a list of filenames of stored medical
+    images for a patient
+
+    This function receives a patient id a input and included it
+    in it's GET request. This GET request returns a list of filenames
+    that correspond to medical images. This list of filenames is returned.
+    :param patient_id:
+    :return:
+    """
     # this will make a request
     r = requests.get(server_name + "/" + patient_id + "/medical_image_list")
     return r.json()
 
 
 def load_patient_data(patient_id):
+    """
+    This function returns recent patient data for a specific id
+
+    This function makes a GET request for a specific patient id that
+    returns the patient's name, id, most recent heart rate, most
+    recent ecg image, and time of the most recent ecg upload.
+    :param patient_id: the id number of the patient of interest
+    :return: a list containing recent patient information
+    """
     # This will make a request
     r = requests.get(server_name+"/"+patient_id+"/load_recent_data")
     return r.json()
 
 
 def load_ecg_image(patient_id, timestamp):
+    """
+    This function returns the base64 string for a desired ECG
+
+    This function receives a patient id and timestamp as input,
+    and from those two parameters, makes a GET request for a specific
+    ECG image. The GET request returns a base64 string which encodes
+    an image of a plot of ECG readings over time.
+    :param patient_id: the id number of a specific patient
+    :param timestamp: the time of interest for a ECG image
+    :return: the base64 string encoding a ECG image
+    """
     # This will make a request
     r = requests.get(server_name+"/"+patient_id+"/load_ecg_image/"+timestamp)
     return r.text
 
 
 def load_medical_image(patient_id, filename):
+    """
+    This function returns a base64 string of a medical image
+
+    This function accepts as inputs the patient id and the filename
+    of interest. This function makes a GET request, and if the patient
+    of interest has an image stored on the database with the matching
+    filename, the base64 string for that medical image will be returned.
+    :param patient_id: the id number of the patient of interest
+    :param filename: a string that marks a certain image
+    :return: the base64 string of the desired filename
+    """
     r = requests.get(server_name + "/" + patient_id +
                      "/load_medical_image/" + filename)
     return r.text
