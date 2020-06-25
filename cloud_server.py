@@ -238,7 +238,8 @@ def get_file_names(in_list):
 
     This method is deployed in the get_medical_image_list route
 
-    :param in_list: list of lists containing patient medical images and file names
+    :param in_list: list of lists containing patient medical
+                    images and file names
     :return: list containing file names
     """
 
