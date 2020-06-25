@@ -19,6 +19,15 @@ class NewPatient(MongoModel):
 
 
 def init_db():
+    """
+    This function is responsible for connecting to the MongoDB database
+
+    This function is used to connect to MongoDB. It has several print
+    statements which are used as user feedback to the terminal and it
+    connects to the address of the MongoDB database 'finalproject' that
+    was used in this database.
+    :return:
+    """
     print("Connecting to database...")
     connect("mongodb+srv://cduncan9:BME547@cluster0.conjj.mongodb.net/"
             "finalproject?retryWrites=true&w=majority")
@@ -26,6 +35,19 @@ def init_db():
 
 
 def check_patient_exists(patient_id):
+    """
+    This function checks to see if a patient id is in the database
+
+    This function receives a patient_id as input and uses a try-except
+    statement to check whether the given id is in the database. This
+    function first tries to make a query for an object with the
+    given patient_id. If a DoesNotExist arises then the function
+    returns False, but if it successfully completes the query the
+    function returns True
+    :param patient_id: a number potentially identifying a patient
+    :return: True if the patient exist or False if the patient is
+    not in the database
+    """
     try:
         db_item = NewPatient.objects.raw({"_id": patient_id}).first()
     except pymodm_errors.DoesNotExist:
@@ -34,6 +56,21 @@ def check_patient_exists(patient_id):
 
 
 def append_to_patient(info):
+    """
+    This function appends patient data to an already existing patient
+
+    This function is called if a patient already exists in a database.
+    The function first makes a query to get the object that stores
+    the patient info. Then if the name assigned to the patient id is
+    different to what was sent in the input, then the name is switched
+    to the name given in the input list. After that, any of the other
+    elements in the list that have lengths greater than 0 are appended
+    to their respective parameters. The object is then saved back to
+    the database.
+    :param info: a list containing patient data to be added to a
+    patient object
+    :return: True if the data was added
+    """
     patient_id = int(info[0])
     patient = NewPatient.objects.raw({"_id": patient_id}).first()
     if patient.patient_name != info[1]:
@@ -51,6 +88,19 @@ def append_to_patient(info):
 
 
 def add_new_patient(info):
+    """
+    This function adds a new patient to the database
+
+    This function is called when it's patient id is not already in
+    the database. This function first makes a object from the
+    NewPatient class and assigns the patient id and name to it. Then,
+    if any of the other data in the list has a length that is greater
+    than 0, it is added to it's parameter. The NewPatient object is
+    then saved to the database.
+    :param info: a list containing patient data to be added to a
+    patient object
+    :return: True if the data was added
+    """
     patient = NewPatient(patient_id=info[0],
                          patient_name=info[1])
     if len(info[2]) > 0:
@@ -66,11 +116,31 @@ def add_new_patient(info):
 
 
 def retrieve_timestamps(patient_id):
+    """
+    This function gets a list of times that ECG data was uploaded
+
+    This function makes a query to get a NewPatient object from
+    the database using a specified patient_id. This function then
+    gets the timestamp parameter from the object and returns that
+    list of times
+    :param patient_id: a number representing a patient in the
+    database
+    :return: a list of times that ECG data was uploaded
+    """
     patient = NewPatient.objects.raw({"_id": patient_id}).first()
     return patient.timestamp
 
 
 def retrieve_patient_id_list():
+    """
+    This function gets a list of patient ids
+
+    This function creates an empty list called ret.
+    This function then gets all of the objects from the database
+    and loops through the objects, storing the patient_ids of
+    each object in ret.
+    :return: a list of patient_ids in the database
+    """
     ret = list()
     for patient in NewPatient.objects.raw({}):
         ret.append(patient.patient_id)
@@ -78,6 +148,19 @@ def retrieve_patient_id_list():
 
 
 def get_ecg_string(patient_id, timestamp):
+    """
+    This function gets the base64 string of an ecg image for a
+    specific time and patient
+
+    This function first gets the object that has the patient_id
+    that is specified in the input and gets the list of times that
+    are stored in the object. This list of times is then looped through.
+    At the index where the time is the same as the time given in the
+    input, the string in the ecg list at the same index is returned.
+    :param patient_id: a number specifying a patient in the database
+    :param timestamp: a time of an ECG upload
+    :return: a base64 string containing an ECG image
+    """
     patient = NewPatient.objects.raw({"_id": patient_id}).first()
     times = patient.timestamp
     ecg_list = patient.ecg_images
@@ -88,6 +171,16 @@ def get_ecg_string(patient_id, timestamp):
 
 
 def get_latest_data(patient_id):
+    """
+    This function returns a list of the most recent data for a patient
+
+    This function first makes a query to get the object that has the
+    patient_id that it given in the input. Then this function gets the
+    patient name, heart rate list, time list, and base64 ecg list. This
+    function returns the last value in each list.
+    :param patient_id: a number representing a patient
+    :return: a list of recent patient data
+    """
     patient = NewPatient.objects.raw({"_id": patient_id}).first()
     name = patient.patient_name
     hr = patient.heart_rate
@@ -98,6 +191,19 @@ def get_latest_data(patient_id):
 
 # Verification functions
 def verify_patient_id(patient_id):
+    """
+    This function is meant to check if the patient id is the right
+    format
+
+    This function first checks to see if the patient id is an integer.
+    If it is an integer than that number is returned without
+    manipulation. If the patient_id is a string then this function checks
+    to see if it is a numeric string. If it is then the function converts
+    the patient id into an integer and returns it. If the patient id is
+    the wrong format, then this function returns false.
+    :param patient_id: a number identifying a patient
+    :return: either an integer patient id or False
+    """
     if type(patient_id) == int:
         return patient_id
     if type(patient_id) == str:
@@ -107,6 +213,19 @@ def verify_patient_id(patient_id):
 
 
 def verify_timestamp_exists(patient_id, timestamp):
+    """
+    This function verifies that a specific time is in the time list
+    for a patient
+
+    This function makes a query to get an object that has the
+    same patient_id that what given in the input. Then this
+    function checks to see if the timestamp given in the input
+    is contained in the list of times stored in the database.
+    :param patient_id: a number identifying a patient
+    :param timestamp: a given time of ECG upload
+    :return: True or False depending on if the time is in the
+    database
+    """
     patient = NewPatient.objects.raw({"_id": patient_id}).first()
     times = patient.timestamp
     if timestamp in times:
@@ -115,6 +234,7 @@ def verify_timestamp_exists(patient_id, timestamp):
 
 
 def get_file_names(in_list):
+
     temp = list()
     for item in in_list:
         temp.append(item[1])
