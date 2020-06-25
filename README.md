@@ -77,6 +77,9 @@ The monitoring station clien makes GET requests to the server to get the informa
  
 ## Access This Server
 
+The code is running on the following server:
+http://vcm-15220.vm.duke.edu:5000
+
 ## Git Status Badge
 [![Build Status](https://travis-ci.com/BME547-Summer2020/final-project-duncan-therien.svg?token=RLd1CpbXx8eP2MxfSyyp&branch=master)](https://travis-ci.com/BME547-Summer2020/final-project-duncan-therien)
 
