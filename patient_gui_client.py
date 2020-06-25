@@ -186,7 +186,7 @@ def design_window():
 
     def cancel():
         """Closes gui
-        
+
         """
         root.destroy()
 
