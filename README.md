@@ -38,7 +38,7 @@ You will now see window open up on the screen of your computer that looks like:
 
 ![alt text](https://github.com/BME547-Summer2020/final-project-duncan-therien/blob/master/Patient_user_interface.jpg)
 
-Add more here after talking to Aidan
+In the top right-hand corner of the GUI you will see two entry boxes, one that says `Enter Your Name` and one that says `Enter Your MRN`. Follow the instructions and enter your data accordingly. Then, press the button that says `get image name`. This will open a file dialog box which will allow you to select an image that you wish to upload. Select an image and click the `ok` button directly to the right of the entry box. Then, click the button that says `get filename`. This will open another file dialog box. Navigate through your computer's files and select a file of ECG data. Once you select a file, press the `ok` button to the right of the entry box. Press `upload to database` to upload your data to the server.
 
 #### Using The Monitoring-Station Client
 To use the monitoring-station client, open up a terminal and navigate using the command line to the folder containing the python module `monitoring_station_gui_client.py`.
@@ -61,15 +61,18 @@ If you wish to load an image of a past ECG dataset, click on the arrow of the dr
 Press the button beside the drop-down menu that says `Load Data`. After that, you should see the image of the selected ECG dataset appear beside the image of the most recent ECG dataset.
 You will also notice another button appear below the new ECG image that says `Save Past ECG Image`. 
 If you wish to save a copy of this image onto your computer, press this button. A file dialog box will then pop up onto the screen.
-You can use this file dialog box to nevigate to the folder that you wish to save your ECG image, and you can provide a name to save your image file under.
-
-INFORMATION ABOUT USING THE MEDICAL IMAGE DROP DOWN BOX.
+You can use this file dialog box to navigate to the folder that you wish to save your ECG image, and you can provide a name to save your image file under.
+If you want to look at a person's list of medical images, click on the drop-down box beside `Load Medical Image`. Select the filename of an image that you wish to see. Click the `Load Image` button, and the medical image will be displayed on the screen.  
+Just like with the ECG images, a button will appear on the GUI. If you wish to save a copy of this image onto your computer, press this button. A file dialog box will then pop up onto the screen.
+You can use this file dialog box to navigate to the folder that you wish to save your ECG image, and you can provide a name to save your image file under.
 
 If at any time you wish to reset all of data on the scren to it's cleared appearence before any data was loaded, press the `Reset Data` button, and all of the patient data on the screen will disappear.
 If at any time you wish to exit the monitoring-station GUI, you can click the `Exit` button, which will close the program.
 
 ## About This Software
-The patient-side client is used to populate the database that stores patient information. The patient side client is capable of sending the patient's medical record number, name, average heart rate for an ecg sample, the time that any ECG data is sent to the server, an image of a plotted ECG dataset, medical images like Xrays or CT scans, and the filenames of the uploaded medical images.
+The patient-side client is used to populate the database that stores patient information. The patient side client is capable of sending the patient's medical record number, name, average heart rate for an ecg sample, the time that any ECG data is sent to the server, an image of a plotted ECG dataset, medical images like Xrays or CT scans, and the filenames of the uploaded medical images. As described above, a patient can enter their medical record number, name, a medical image, and a file containing an ECG data set. The patient-side client software calls the `ECG_analysis.py` module to get the average heart rate from the ECG file. The ECG file is then used to produce an image of the ECG, and everything is sent to the server using a POST request.
+The cloud server receives the POST requests from the client and uses MongoDB to store patient data. The server first checks to see if the patient id exists. If it does, then it appends the new information to the already stored data. If no matching patient id exists in the database, then a new patient is stored.
+The monitoring station clien makes GET requests to the server to get the information stored. When a GET request is made by the monitoring station client, the information is retrieved from the database and sent to the monitoring station.
 
  
 ## Access This Server
