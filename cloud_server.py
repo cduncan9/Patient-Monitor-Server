@@ -234,6 +234,13 @@ def verify_timestamp_exists(patient_id, timestamp):
 
 
 def get_file_names(in_list):
+    """Makes a list of each index[1] in a list of lists
+
+    This method is deployed in the get_medical_image_list route
+
+    :param in_list: list of lists containing patient medical images and file names
+    :return: list containing file names
+    """
 
     temp = list()
     for item in in_list:
@@ -242,6 +249,16 @@ def get_file_names(in_list):
 
 
 def find_key(in_list, key):
+    """In list of lists returns index[0] if index[1] == key
+
+    This method is deployed in the get_medical_image() route
+    It find the medical image string for an input file_name (key)
+
+    :param in_list:
+    :param key: str containing medical image in base 64
+    :return:
+    """
+
     for item in in_list:
         if item[1] == key:
             return item[0]
@@ -250,6 +267,14 @@ def find_key(in_list, key):
 # Route functions should be placed below this line
 @app.route("/api/new_patient", methods=['POST'])
 def add_patient():
+    """Adds patient to database
+
+    POST request receives patient information from client,
+    calls append_to_patient(in_data) if the patient already exists,
+    otherwise calls add_new_patient()
+
+    :return: str "Patient added", int 200
+    """
     in_data = request.get_json()
     verify_id = verify_patient_id(in_data[0])
     check = check_patient_exists(verify_id)
@@ -262,12 +287,28 @@ def add_patient():
 
 @app.route("/patient_id_list", methods=['GET'])
 def get_patient_id_list():
+    """Retrieves list of patient IDs
+
+    GEt request, Calls retrieve_patient_id_list() and returns the
+    list of patient IDs in json format
+
+    :return: json containing list of patient IDs
+    """
     return jsonify(retrieve_patient_id_list())
 
 
 # This is actually getting a list of timestamps
 @app.route("/<patient_id>/ecg_image_list", methods=['GET'])
 def get_ecg_image_list(patient_id):
+    """Retrieves list of ECG images (timestamps)
+
+    GET requests, makes a query for the list of patient
+    ECG timestamps from the database
+
+    :param patient_id: int containing patient ID
+    :return: json containing list of string timestamps,
+             str containing error message if error
+    """
     verify_id = verify_patient_id(patient_id)
     if verify_id is False:
         return "{} is not a correct format for patient id".format(patient_id),\
@@ -280,6 +321,16 @@ def get_ecg_image_list(patient_id):
 
 @app.route("/<patient_id>/medical_image_list", methods=['GET'])
 def get_medical_image_list(patient_id):
+    """Retrieves list of medical images
+
+    Get request, This method makes a query to the database for the
+    list of patient medical images. It makes sure the patient exists
+    in the database before making the query.
+
+    :param patient_id: int containing patient ID
+    :return: json containing patient medical images
+             str containing error message otherwise
+    """
     patient_id = int(patient_id)
     if check_patient_exists(patient_id):
         patient = NewPatient.objects.raw({"_id": patient_id}).first()
@@ -290,6 +341,16 @@ def get_medical_image_list(patient_id):
 
 @app.route("/<patient_id>/load_recent_data", methods=['GET'])
 def load_recent_patient_data(patient_id):
+    """Loads recent patient data
+
+    If the patient id is verified, makes a query to the database
+    for the patients most recent data. This is primarily used
+    to update the GUI with most recent files.
+
+    :param patient_id: int containing patient ID
+    :return: json containing requested patient data
+             str with error message otherwise
+    """
     # Verify that the patient_id exists
     verify_id = verify_patient_id(patient_id)
     if verify_id is False:
@@ -304,6 +365,15 @@ def load_recent_patient_data(patient_id):
 
 @app.route("/<patient_id>/load_ecg_image/<timestamp>", methods=['GET'])
 def load_ecg_image(patient_id, timestamp):
+    """Loads individual ECG image
+
+    GET request, queries database for a specific ECG image
+    identified by the input timestamp string
+
+    :param patient_id: int containing patient ID
+    :param timestamp: str containing timestamp
+    :return: str containing b64 ECG image
+    """
     # Verify that the patient_id exists
     verify_id = verify_patient_id(patient_id)
     if verify_id is False:
@@ -322,6 +392,15 @@ def load_ecg_image(patient_id, timestamp):
 
 @app.route("/<patient_id>/load_medical_image/<medical_image>", methods=['GET'])
 def load_medical_image(patient_id, medical_image):
+    """Loads specified medical image
+
+    GET request, queries the server for a specific medical image specified
+    by the input medical image name.
+
+    :param patient_id: int containing patient ID
+    :param medical_image: str containing medical image file name
+    :return: json containing str of base 64 medical image
+    """
     patient_id = int(patient_id)
     if check_patient_exists(patient_id):
         patient = NewPatient.objects.raw({"_id": patient_id}).first()
