@@ -150,10 +150,11 @@ def get_patient_id_list():
 def get_ecg_image_list(patient_id):
     verify_id = verify_patient_id(patient_id)
     if verify_id is False:
-        return jsonify([])
+        return "{} is not a correct format for patient id".format(patient_id),\
+               400
     check = check_patient_exists(verify_id)
     if check is not True:
-        return jsonify([])
+        return "Patient {} not found".format(verify_id), 400
     return jsonify(retrieve_timestamps(verify_id))
 
 
@@ -172,10 +173,11 @@ def load_recent_patient_data(patient_id):
     # Verify that the patient_id exists
     verify_id = verify_patient_id(patient_id)
     if verify_id is False:
-        return jsonify([])
+        return "{} is not a correct format for patient id".format(patient_id),\
+               400
     check = check_patient_exists(verify_id)
     if check is not True:
-        return jsonify([])
+        return "Patient {} not found".format(verify_id), 400
     data = get_latest_data(verify_id)
     return jsonify(data)
 
@@ -185,14 +187,15 @@ def load_ecg_image(patient_id, timestamp):
     # Verify that the patient_id exists
     verify_id = verify_patient_id(patient_id)
     if verify_id is False:
-        return jsonify([])
+        return "{} is not a correct format for patient id".format(patient_id),\
+               400
     check = check_patient_exists(verify_id)
     if check is not True:
-        return jsonify([])
+        return "Patient {} not found".format(verify_id), 400
     verify_timestamp = verify_timestamp_exists(verify_id,
                                                timestamp)
     if verify_timestamp is False:
-        return jsonify([])
+        return "timestamp not found", 400
     ecg_string = get_ecg_string(verify_id, timestamp)
     return ecg_string
 
