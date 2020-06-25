@@ -82,11 +82,11 @@ def design_window():
 
     def save_ecg_image(ecg_image):
         image_bytes = base64.b64decode(ecg_image)
-        with open(file_name.get(), "wb") as out_file:
+        with open("temp_image", "wb") as out_file:
             out_file.write(image_bytes)
 
     def load_ecg():
-        tk_image = load_image_for_display(file_name.get())
+        tk_image = load_image_for_display("temp_image")
         display_past_ecg_value.image = tk_image
         display_past_ecg_value.configure(image=tk_image)
 
