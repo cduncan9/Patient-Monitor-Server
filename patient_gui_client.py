@@ -20,6 +20,14 @@ server_name = "http://127.0.0.1:5000"
 
 
 def load_image_for_display(file_name):
+    """Converts a file to Image object in tkinter
+
+    Uses PIl libraries Image and ImageTk to convert file to image object
+    Returns the image object in format that is tkinter compatible.
+
+    :param file_name: str containing path to image file
+    :return: ImageTk object of input image file
+    """
     image_object = Image.open(file_name)
     image_object = image_object.resize((300, 300), Image.ANTIALIAS)
     tk_image = ImageTk.PhotoImage(image_object)
@@ -27,6 +35,14 @@ def load_image_for_display(file_name):
 
 
 def convert_file_to_b64str(fn):
+    """Converts input file to base 64 string
+
+    Uses base64 library to convert image to a string
+    Returns image in base 64 string, utf-8 encoded
+
+    :param fn: str containing input file name
+    :return: str containing base 64 image
+    """
     with open(fn, "rb") as image_file:
         b64_bytes = base64.b64encode(image_file.read())
     b64_string = str(b64_bytes, encoding='utf-8')
@@ -34,6 +50,13 @@ def convert_file_to_b64str(fn):
 
 
 def convert_plot_to_b64str():
+    """Converts matplotlib plot to b64 string
+
+    Employs io library to convert mayplotlib plot to png
+    and then to b64 string
+
+    :return: str containing the matplotlib plot in base64
+    """
     figfile = BytesIO()
     plt.savefig(figfile, format='png')
     figfile.seek(0)
@@ -42,6 +65,19 @@ def convert_plot_to_b64str():
 
 
 def send_patient_to_server(mrn_val, name, hr, timestamp, ecg, image):
+    """Sends new patient to the database
+
+    Makes post request to server with all data input to gui
+    which adds a new patient to the database.
+
+    :param mrn_val: int containing medical record number
+    :param name: str containing patient name
+    :param hr: float containing calculated heart rate
+    :param timestamp: str containing timestamp
+    :param ecg: str containing ecg plot in base 64
+    :param image: str containing the medical image in base 64
+    :return: str "Good Post" if post was succesful, "Bad Post" otherwise
+    """
     info = [mrn_val, name, hr, timestamp, ecg, image]
     r = requests.post(server_name+"/api/new_patient", json=info)
     print(r.text)
@@ -54,6 +90,11 @@ def send_patient_to_server(mrn_val, name, hr, timestamp, ecg, image):
 def design_window():
 
     def send_patient():
+        """Calls send_patient_to_server with local variables
+
+        Uses .get() command on tk.StringVars present in the gui
+        to upload user inputed patient to the database
+        """
         fn = image_name.get().split("/")
         name = fn[-1]
         send_patient_to_server(mrn_entry.get(),
@@ -66,14 +107,28 @@ def design_window():
                                 name]])
 
     def get_file():
+        """Gets file from user's file dialog
+
+        This function is called with a tk button command
+        """
         fn = filedialog.askopenfilename()
         file_name.set(fn)
 
     def get_image():
+        """Gets image from user's file dialog
+
+        This function is called with a tk button command
+        """
         im = filedialog.askopenfilename()
         image_name.set(im)
 
     def load_image():
+        """Loads Image object into local varaible
+
+        Loads image by calling load_image_for_display()
+        and puts the Image object in image_label.image
+        to be displayed in GUI
+        """
         fn = image_name.get()
         tk_image = load_image_for_display(fn)
         image_label.configure(image=tk_image)
@@ -81,16 +136,37 @@ def design_window():
         result_label.grid_remove()
 
     def save_ecg_image(ecg_image):
+        """Decodes ecg image from b64 string
+
+        Writes ecg image to out_file called temp_image
+
+        :param ecg_image: str containing ecg image in base 64
+        """
         image_bytes = base64.b64decode(ecg_image)
         with open("temp_image", "wb") as out_file:
             out_file.write(image_bytes)
 
     def load_ecg():
+        """Loads image object into local variable
+
+        Loads image object by calling load_image_for_display()
+        into display_past_ecg_value varaible to be displayed in
+        GUI
+        """
         tk_image = load_image_for_display("temp_image")
         display_past_ecg_value.image = tk_image
         display_past_ecg_value.configure(image=tk_image)
 
     def load_ECG_trace():
+        """Processes input ECG data
+
+        This function takes in ECG data .csv files, calls
+        functions from ECG_analysis.py to read and process the data
+        THe data is plotted using matplotlib, converted to .png
+        and encoded into a b64 string
+
+        :return: [float containing mean bpm, str containing ecg plot in b64]
+        """
         fn = file_name.get()
         hr_data = normalize_data(fn)
         plt.clf()
@@ -109,6 +185,9 @@ def design_window():
         return [result, plot_hash]
 
     def cancel():
+        """Closes gui
+
+        """
         root.destroy()
 
     root = tk.Tk()
