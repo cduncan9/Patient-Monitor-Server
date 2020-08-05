@@ -1,5 +1,4 @@
-# Final Project
-This is the repository for the final project for BME 547. The contributors to this repository are [Aidan Therien](https://github.com/aidan-therien) and [Canyon Duncan](https://github.com/cduncan9), and the professor for BME 547 is [Dr. David Ward](https://github.com/dward2?tab=followers). 
+# Patient Monitor 
 ## Using This Software
 This software consists of two graphical user interfaces (GUI), one used by a patient (the patient-side client) and one used by someone who is monitoring the patient (the monitoring-station client). These two GUIs are capable of sending and receiving patient data between themselves through the use of a cloud server. 
 Both of the client GUIs can only send and receive data when the cloud server is running, so it is important to make sure that the server is running either locally or on a virtual machine.
